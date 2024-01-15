@@ -2,10 +2,33 @@ package com.android.contact_119
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
+import com.android.contact_119.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayoutMediator
+import java.time.format.TextStyle
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        viewPagerAdapter = ViewPagerAdapter(this@MainActivity)
+
+        with(binding) {
+            //어뎁터 연결
+            viewPager.adapter = viewPagerAdapter
+
+            //탭, 뷰페이저 연결
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+
+                when (position) {
+                    0 -> tab.text = "연락처"
+                    else -> tab.text = "내정보"
+                }
+            }.attach()
+        }
+
     }
 }
