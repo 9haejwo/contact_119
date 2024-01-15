@@ -1,11 +1,9 @@
 package com.android.contact_119
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.android.contact_119.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
-import java.time.format.TextStyle
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
