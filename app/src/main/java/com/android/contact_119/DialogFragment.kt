@@ -60,11 +60,13 @@ class DialogFragment : DialogFragment() {
                     )
                 ) {
                     if (etName.text!!.isEmpty()) NameInputLayout.error =
-                        "병원명을 확인해 주세요" else NameInputLayout.error = null
+                        getString(R.string.Name_error_message) else NameInputLayout.error = null
                     if (etContact.text!!.isEmpty() || !checkNumberLength(etContact)) ContactInputLayout.error =
-                        "전화번호를 확인해 주세요" else ContactInputLayout.error = null
+                        getString(R.string.Contact_error_message) else ContactInputLayout.error =
+                        null
                     if (etAddress.text!!.isEmpty()) AddressInputLayout.error =
-                        "주소를 확인해 주세요" else AddressInputLayout.error = null
+                        getString(R.string.Address_error_message) else AddressInputLayout.error =
+                        null
 
                     return@setOnClickListener
                 } else {
@@ -77,29 +79,6 @@ class DialogFragment : DialogFragment() {
                 dialog?.dismiss()
             }
         }
-
-//        checkPhoneNumber(binding.etContact, binding.ContactInputLayout)
-//        check(binding.etName, binding.NameInputLayout)
-//        check(binding.etAddress, binding.AddressInputLayout)
-//
-//        binding.btnAdd.setOnClickListener {
-//            //빈 값 있는지 체크
-//            if(binding.etName.text!!.isEmpty()||binding.etContact.text!!.isEmpty()||binding.etAddress.text!!.isEmpty()||!checkNumberLength(binding.etContact)){
-//                if(binding.etName.text!!.isEmpty()) binding.NameInputLayout.error = "병원명을 확인해 주세요" else binding.NameInputLayout.error = null
-//                if(binding.etContact.text!!.isEmpty()||!checkNumberLength(binding.etContact)) binding.ContactInputLayout.error = "전화번호를 확인해 주세요" else binding.ContactInputLayout.error = null
-//                if(binding.etAddress.text!!.isEmpty()) binding.AddressInputLayout.error = "주소를 확인해 주세요" else binding.AddressInputLayout.error = null
-//
-//                return@setOnClickListener
-//            }else{
-//                //TODO 조건 만족시 전화번호 추가
-//                dialog?.dismiss()
-//            }
-//
-//        }
-//        binding.btnCancel.setOnClickListener {
-//            dialog?.dismiss()
-//        }
-
     }
 
     //전화번호 유효성 체크
@@ -112,10 +91,11 @@ class DialogFragment : DialogFragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                 if (editText.text.isEmpty() || editText.text.isBlank() || editText.text.contains(" ")) layout.error =
-                    "전화번호를 확인해 주세요"
+                    getString(R.string.Contact_error_message)
                 else if (editText.text[0] != '0' && editText.text[0] != '1') layout.error =
-                    "전화번호를 확인해 주세요"
-                else if (!editText.text.contains("-")) layout.error = "전화번호를 확인해 주세요"
+                    getString(R.string.Contact_error_message)
+                else if (!editText.text.contains("-")) layout.error =
+                    getString(R.string.Contact_error_message)
                 else layout.error = null
             }
 
@@ -143,7 +123,7 @@ class DialogFragment : DialogFragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (editText.text.isEmpty() || editText.text.isBlank() || editText.text.contains(" ")) {
-                    layout.error = "${editText.hint}명을(를) 확인해 주세요"
+                    layout.error = "${editText.hint}${getString(R.string.check_footer)}"
                 } else {
                     layout.error = null
                 }

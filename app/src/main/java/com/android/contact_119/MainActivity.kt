@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
 
                 when (position) {
-                    0 -> tab.text = "연락처"
-                    else -> tab.text = "내정보"
+                    0 -> tab.text = getString(R.string.Tab_Contact)
+                    else -> tab.text = getString(R.string.Tab_MyPage)
                 }
             }.attach()
         }
