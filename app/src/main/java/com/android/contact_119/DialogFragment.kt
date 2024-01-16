@@ -11,11 +11,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.WindowManager.LayoutParams
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDialogBinding
+import com.android.contact_119.manager.BUSAN
 import com.android.contact_119.manager.DAEGU
+import com.android.contact_119.manager.DAEJEON
+import com.android.contact_119.manager.GWANGJOO
+import com.android.contact_119.manager.INCHEON
+import com.android.contact_119.manager.SEOUL
+import com.android.contact_119.manager.ULSAN
 import com.google.android.material.textfield.TextInputLayout
 
 
@@ -54,7 +62,17 @@ class DialogFragment : DialogFragment() {
             checkPhoneNumber(etContact, ContactInputLayout)
             check(etName, NameInputLayout)
             check(etAddress, AddressInputLayout)
-
+            spinner.adapter = context?.let { ArrayAdapter.createFromResource(it,R.array.area,android.R.layout.simple_list_item_1) }
+            val area = when(spinner.selectedItemPosition){
+                0-> SEOUL
+                1-> BUSAN
+                2-> DAEJEON
+                3-> DAEGU
+                4-> INCHEON
+                5-> GWANGJOO
+                6-> ULSAN
+                else-> SEOUL
+            }
 
             btnAdd.setOnClickListener {
                 val nameEmpty = etName.text!!.isEmpty()
@@ -79,12 +97,14 @@ class DialogFragment : DialogFragment() {
 
                     return@setOnClickListener
                 } else {
+                    Toast.makeText(context, "${spinner.selectedItemPosition}", Toast.LENGTH_SHORT).show()
                     val item = ContactItems.Contents(
                         etName.text.toString(),
                         etContact.text.toString(),
                         etAddress.text.toString(),
                         DAEGU, R.drawable.main_symbol
                     )
+
                     contactDataListener?.onContactDataAdded(item)
                     dialog?.dismiss()
                 }
@@ -93,6 +113,8 @@ class DialogFragment : DialogFragment() {
             btnCancel.setOnClickListener {
                 dialog?.dismiss()
             }
+
+
         }
     }
 
