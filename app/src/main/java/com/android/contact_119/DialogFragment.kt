@@ -15,6 +15,7 @@ import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDialogBinding
+import com.android.contact_119.manager.DAEGU
 import com.google.android.material.textfield.TextInputLayout
 
 
@@ -54,29 +55,35 @@ class DialogFragment : DialogFragment() {
             check(etName, NameInputLayout)
             check(etAddress, AddressInputLayout)
 
+
             btnAdd.setOnClickListener {
+                val nameEmpty = etName.text!!.isEmpty()
+                val addressEmpty = etAddress.text!!.isEmpty()
+                val nameBlank = etName.text!!.isBlank()
+                val addressBlank = etAddress.text!!.isBlank()
+                val contactEmpty = etContact.text!!.isEmpty()
                 //빈 값 있는지 체크
-                if (etName.text!!.isEmpty() || etContact.text!!.isEmpty() || etAddress.text!!.isEmpty() || !checkNumberLength(
+                if (nameEmpty || contactEmpty || addressEmpty || !checkNumberLength(
                         etContact
-                    )
+                    ) || nameBlank || addressBlank || NameInputLayout.error != null || ContactInputLayout.error != null || AddressInputLayout.error != null
                 ) {
-                    if (etName.text!!.isEmpty()) NameInputLayout.error =
+                    if (nameEmpty || nameBlank || NameInputLayout.error != null) NameInputLayout.error =
                         getString(R.string.Name_error_message) else NameInputLayout.error = null
-                    if (etContact.text!!.isEmpty() || !checkNumberLength(etContact)) ContactInputLayout.error =
+                    if (contactEmpty || !checkNumberLength(etContact) || ContactInputLayout.error != null) ContactInputLayout.error =
                         getString(R.string.Contact_error_message) else ContactInputLayout.error =
                         null
-                    if (etAddress.text!!.isEmpty()) AddressInputLayout.error =
+                    if (addressEmpty || addressBlank || AddressInputLayout.error != null) AddressInputLayout.error =
                         getString(R.string.Address_error_message) else AddressInputLayout.error =
                         null
 
+
                     return@setOnClickListener
                 } else {
-                    //TODO 데이터추가
                     val item = ContactItems.Contents(
                         etName.text.toString(),
                         etContact.text.toString(),
                         etAddress.text.toString(),
-                        R.drawable.main_symbol
+                        DAEGU, R.drawable.main_symbol
                     )
                     contactDataListener?.onContactDataAdded(item)
                     dialog?.dismiss()
@@ -142,7 +149,8 @@ class DialogFragment : DialogFragment() {
         })
 
     }
-    fun setContactDataListener(listener: ContactDataListener){
+
+    fun setContactDataListener(listener: ContactDataListener) {
         contactDataListener = listener
     }
 }
