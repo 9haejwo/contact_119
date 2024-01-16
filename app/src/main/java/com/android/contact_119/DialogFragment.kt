@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDialogBinding
+import com.android.contact_119.fragment.ContactFragment
 import com.android.contact_119.manager.BUSAN
 import com.android.contact_119.manager.DAEGU
 import com.android.contact_119.manager.DAEJEON
@@ -24,6 +25,7 @@ import com.android.contact_119.manager.GWANGJOO
 import com.android.contact_119.manager.INCHEON
 import com.android.contact_119.manager.SEOUL
 import com.android.contact_119.manager.ULSAN
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 
@@ -104,7 +106,6 @@ class DialogFragment : DialogFragment() {
                         etAddress.text.toString(),
                         DAEGU, R.drawable.main_symbol
                     )
-
                     contactDataListener?.onContactDataAdded(item)
                     dialog?.dismiss()
                 }
@@ -113,8 +114,6 @@ class DialogFragment : DialogFragment() {
             btnCancel.setOnClickListener {
                 dialog?.dismiss()
             }
-
-
         }
     }
 
@@ -172,7 +171,7 @@ class DialogFragment : DialogFragment() {
 
     }
 
-    fun setContactDataListener(listener: ContactDataListener) {
+    fun setContactDataListener(listener: ContactFragment) {
         contactDataListener = listener
     }
 }
