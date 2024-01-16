@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.contact_119.R
 import com.android.contact_119.adapter.ContactListAdapter
 import com.android.contact_119.databinding.FragmentContactBinding
@@ -23,6 +26,33 @@ class ContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        initToolbarLogo()
+    }
+
+    val TAG = "scroll_position_test"
+    private fun initToolbarLogo() {
+        binding.recyclerViewContact.initToolbarLogoWithScroll()
+    }
+
+    private fun RecyclerView.initToolbarLogoWithScroll() {
+        val fadeInAnim = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+        val logo = binding.ivToolbarLogo
+
+        setOnScrollChangeListener { _, _, _, _, _ ->
+            if (canScrollVertically(-1) && logo.visibility == View.GONE) {
+                logo.apply {
+                    startAnimation(fadeInAnim)
+                    visibility = View.VISIBLE
+                }
+            }
+
+            if (!canScrollVertically(-1)) {
+                logo.apply {
+                    clearAnimation()
+                    visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun initRecyclerView() {
