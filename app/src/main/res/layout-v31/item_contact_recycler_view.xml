@@ -27,24 +27,30 @@
         android:text="서울대학교 응급의료센터"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@id/iv_tumbnail"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_favorite"
         app:layout_constraintStart_toEndOf="@id/iv_tumbnail"
         app:layout_constraintTop_toTopOf="@id/iv_tumbnail" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btn_favorite"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/iv_favorite"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:adjustViewBounds="true"
             android:src="@drawable/favorite_off"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

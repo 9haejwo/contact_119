@@ -10,6 +10,6 @@ sealed class ContactItems {
         var phoneNumber: String,
         var address: String,
         var picture: Int,
-        var profileImage: Int? = null,
+        var thumbnailImage: Int? = null,
     ) : ContactItems()
 }

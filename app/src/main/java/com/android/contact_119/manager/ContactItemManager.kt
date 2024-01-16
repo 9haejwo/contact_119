@@ -15,4 +15,8 @@ object ContactItemManager {
     fun addItem(name: String, phoneNumber: String, address: String, profileImage: Int, picture: Int? = null) {
         contactItems.add(ContactItems.Contents(name, phoneNumber, address, profileImage, picture))
     }
+
+    fun getAllItems(): MutableList<ContactItems.Contents> {
+        return contactItems
+    }
 }
