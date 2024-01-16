@@ -1,15 +1,16 @@
 package com.android.contact_119.data
 
-sealed class ContactItems {
+sealed class ContactItems(open val location: String) {
     data class Header(
-        val location: String
-    ) : ContactItems()
+        override val location: String
+    ) : ContactItems(location)
 
     data class Contents(
         var itemName: String,
         var phoneNumber: String,
         var address: String,
-        var picture: Int,
+        override val location: String,
+        var picture: Int? = null,
         var thumbnailImage: Int? = null,
-    ) : ContactItems()
+    ) : ContactItems(location)
 }
