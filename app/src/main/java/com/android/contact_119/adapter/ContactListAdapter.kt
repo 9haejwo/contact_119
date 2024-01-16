@@ -87,4 +87,7 @@ class ContactListAdapter(val items: MutableList<ContactItems>) :
     override fun getItemCount(): Int {
         return items.size
     }
+
+
+
 }
