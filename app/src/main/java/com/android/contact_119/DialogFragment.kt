@@ -13,7 +13,6 @@ import android.view.WindowManager
 import android.view.WindowManager.LayoutParams
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDialogBinding
@@ -99,12 +98,11 @@ class DialogFragment : DialogFragment() {
 
                     return@setOnClickListener
                 } else {
-                    Toast.makeText(context, "${spinner.selectedItemPosition}", Toast.LENGTH_SHORT).show()
                     val item = ContactItems.Contents(
                         etName.text.toString(),
                         etContact.text.toString(),
                         etAddress.text.toString(),
-                        DAEGU, R.drawable.main_symbol
+                        area, R.drawable.main_symbol
                     )
                     contactDataListener?.onContactDataAdded(item)
                     dialog?.dismiss()

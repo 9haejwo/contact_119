@@ -45,6 +45,9 @@ object ContactItemManager {
         contactItems.add(ContactItems.Contents(name, phoneNumber, address, location, profileImage, picture))
     }
 
+    fun addContent(item: ContactItems.Contents) {
+        contactItems.add(item)
+    }
     fun addHeader(location: String) {
         contactItems.add(ContactItems.Header(location))
     }
