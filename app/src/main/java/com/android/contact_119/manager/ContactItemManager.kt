@@ -28,6 +28,7 @@ object ContactItemManager {
         addContent("중앙대학교병원 응급의료센터", "02-6299-1339", "서울 동작구 흑석로 102",SEOUL, R.drawable.chung_ang_univ_pic, R.drawable.chung_ang_univ_logo)
         addContent("중앙대학교병원 응급의료센터", "02-6299-1339", "서울 동작구 흑석로 102", ULSAN, R.drawable.chung_ang_univ_pic, R.drawable.chung_ang_univ_logo)
         addContent("중앙대학교병원 응급의료센터", "02-6299-1339", "서울 동작구 흑석로 102",SEOUL, R.drawable.chung_ang_univ_pic, R.drawable.chung_ang_univ_logo)
+        addContent("중앙대학교병원 응급의료센터", "02-6299-1339", "서울 동작구 흑석로 102",SEOUL, R.drawable.chung_ang_univ_pic, R.drawable.chung_ang_univ_logo)
         addContent("중앙대학교병원 응급의료센터", "02-6299-1339", "서울 동작구 흑석로 102", BUSAN, R.drawable.chung_ang_univ_pic, R.drawable.chung_ang_univ_logo)
         addContent("중앙대학교병원 응급의료센터", "02-6299-1339", "서울 동작구 흑석로 102",BUSAN, R.drawable.chung_ang_univ_pic, R.drawable.chung_ang_univ_logo)
         addContent("중앙대학교병원 응급의료센터", "02-6299-1339", "서울 동작구 흑석로 102",BUSAN, R.drawable.chung_ang_univ_pic, R.drawable.chung_ang_univ_logo)
