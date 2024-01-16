@@ -14,13 +14,13 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/layout_appbar"
             android:layout_width="match_parent"
-            android:layout_height="255dp"
+            android:layout_height="270dp"
             android:background="@color/white"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="210dp"
+                android:layout_height="190dp"
                 app:contentScrim="@color/white"
                 app:layout_scrollFlags="scroll">
 
@@ -36,17 +36,16 @@
                         android:src="@drawable/contact_119"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-            <androidx.appcompat.widget.Toolbar
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="80dp"
                 android:background="@color/white"
                 app:layout_collapseMode="pin">
 
@@ -55,10 +54,14 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="end"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="24dp"
-                    android:src="@drawable/btn_add" />
+                    android:src="@drawable/btn_add"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.appcompat.widget.Toolbar>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -66,7 +69,6 @@
             android:id="@+id/recycler_view_contact"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="24dp"
             android:background="@color/white"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 

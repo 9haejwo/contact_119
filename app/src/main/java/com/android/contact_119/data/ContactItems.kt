@@ -1,7 +1,7 @@
 package com.android.contact_119.data
 
 sealed class ContactItems {
-    data class Title(
+    data class Header(
         val location: String
     ) : ContactItems()
 
