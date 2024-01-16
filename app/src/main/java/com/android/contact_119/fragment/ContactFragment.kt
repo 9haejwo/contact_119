@@ -29,7 +29,6 @@ class ContactFragment : Fragment() {
         initToolbarLogo()
     }
 
-    val TAG = "scroll_position_test"
     private fun initToolbarLogo() {
         binding.recyclerViewContact.initToolbarLogoWithScroll()
     }
@@ -57,7 +56,7 @@ class ContactFragment : Fragment() {
 
     private fun initRecyclerView() {
         with(binding.recyclerViewContact) {
-            adapter = ContactListAdapter(ContactItemManager.getAllItems())
+            adapter = ContactListAdapter(ContactItemManager.sortWithHeader())
             layoutManager = LinearLayoutManager(context)
         }
     }

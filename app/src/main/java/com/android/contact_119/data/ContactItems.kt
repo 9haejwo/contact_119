@@ -9,6 +9,7 @@ sealed class ContactItems {
         var itemName: String,
         var phoneNumber: String,
         var address: String,
+        val location: String,
         var picture: Int,
         var thumbnailImage: Int? = null,
     ) : ContactItems()
