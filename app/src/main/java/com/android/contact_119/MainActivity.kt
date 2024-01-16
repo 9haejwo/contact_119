@@ -1,7 +1,7 @@
 package com.android.contact_119
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.android.contact_119.adapter.ViewPagerAdapter
 import com.android.contact_119.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
 
                 when (position) {
-                    0 -> tab.text = "연락처"
-                    else -> tab.text = "내정보"
+                    0 -> tab.text = getString(R.string.Tab_Contact)
+                    else -> tab.text = getString(R.string.Tab_MyPage)
                 }
             }.attach()
         }
