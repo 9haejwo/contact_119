@@ -13,13 +13,14 @@ import android.view.WindowManager
 import android.view.WindowManager.LayoutParams
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
+import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDialogBinding
 import com.google.android.material.textfield.TextInputLayout
 
 
 class DialogFragment : DialogFragment() {
     private lateinit var binding: FragmentDialogBinding
-
+    private var contactDataListener: ContactDataListener? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,7 +71,14 @@ class DialogFragment : DialogFragment() {
 
                     return@setOnClickListener
                 } else {
-                    //TODO 조건 만족시 전화번호 추가
+                    //TODO 데이터추가
+                    val item = ContactItems.Contents(
+                        etName.text.toString(),
+                        etContact.text.toString(),
+                        etAddress.text.toString(),
+                        R.drawable.main_symbol
+                    )
+                    contactDataListener?.onContactDataAdded(item)
                     dialog?.dismiss()
                 }
 
@@ -134,4 +142,11 @@ class DialogFragment : DialogFragment() {
         })
 
     }
+    fun setContactDataListener(listener: ContactDataListener){
+        contactDataListener = listener
+    }
+}
+
+interface ContactDataListener {
+    fun onContactDataAdded(item: ContactItems.Contents)
 }

@@ -1,12 +1,9 @@
 package com.android.contact_119.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import androidx.recyclerview.widget.RecyclerView.inflate
-import androidx.viewbinding.ViewBinding
 import coil.api.load
 import com.android.contact_119.R
 import com.android.contact_119.data.ContactItems

@@ -1,6 +1,10 @@
 package com.android.contact_119.data
 
-sealed class ContactItems {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+sealed class ContactItems : Parcelable {
     data class Header(
         val location: String
     ) : ContactItems()
