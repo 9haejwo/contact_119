@@ -42,6 +42,14 @@
             android:hint="@string/NameHint" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/ContactInputLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/NameInputLayout" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ContactInputLayout"
         android:layout_width="match_parent"
