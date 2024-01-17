@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.contact_119.ContactDataListener
+import com.android.contact_119.DetailFragment
 import com.android.contact_119.DialogFragment
 import com.android.contact_119.R
 import com.android.contact_119.adapter.ContactListAdapter
@@ -75,7 +76,11 @@ class ContactFragment : Fragment(), ContactDataListener {
     fun clickView(adapter: ContactListAdapter) {
         object : ContactListAdapter.ItemClick {
             override fun onClick(item: ContactItems) {
-                Log.i("click_test", "view click: $item")
+                val detailFragment = DetailFragment.newInstance(item.ItemID, nowUser)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, detailFragment)
+                    .addToBackStack(null)
+                    .commit()
             }
         }.also { adapter.itemClick = it }
     }

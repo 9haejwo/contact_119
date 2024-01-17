@@ -64,6 +64,9 @@ object ContactItemManager {
         nowItem.favoriteUser = !nowItem.favoriteUser
     }
 
+    fun getById(itemId: Long): ContactItems.Contents {
+        return contactItems.find { it.ItemID == itemId } as ContactItems.Contents
+    }
     fun sortWithHeader(): MutableList<ContactItems> {
         val temp = mutableListOf<ContactItems>()
         val headerList = contactItems.filter { it is ContactItems.Header }.toMutableList()
