@@ -1,6 +1,7 @@
 package com.android.contact_119.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,23 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.contact_119.ContactDataListener
+import com.android.contact_119.DetailFragment
 import com.android.contact_119.DialogFragment
 import com.android.contact_119.R
 import com.android.contact_119.adapter.ContactListAdapter
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentContactBinding
 import com.android.contact_119.manager.ContactItemManager
+import com.android.contact_119.manager.UserManager
+import com.android.contact_119.nowUser
+
+const val gone = View.GONE
+const val visible = View.VISIBLE
 
 class ContactFragment : Fragment(), ContactDataListener {
     private val binding by lazy { FragmentContactBinding.inflate(layoutInflater) }
+    private val listAdapter by lazy { ContactListAdapter() }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,11 +43,13 @@ class ContactFragment : Fragment(), ContactDataListener {
         initRecyclerView()
         initToolbarLogo()
         initDialog()
+        initInput()
     }
 
     private fun initRecyclerView() {
         with(binding.recyclerViewContact) {
-            adapter = ContactListAdapter(ContactItemManager.sortWithHeader())
+            listAdapter.submitList(ContactItemManager.sortWithHeader())
+            adapter = listAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
@@ -57,33 +68,70 @@ class ContactFragment : Fragment(), ContactDataListener {
         }
     }
 
+    private fun initInput() {
+        clickFavorite(listAdapter)
+        clickView(listAdapter)
+    }
+
+    fun clickView(adapter: ContactListAdapter) {
+        object : ContactListAdapter.ItemClick {
+            override fun onClick(item: ContactItems) {
+                val detailFragment = DetailFragment.newInstance(item.ItemID, nowUser)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, detailFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }.also { adapter.itemClick = it }
+    }
+
+    fun clickFavorite(adapter: ContactListAdapter) {
+        object : ContactListAdapter.FavoriteClick {
+            override fun onFavoriteClick(item: ContactItems, position: Int) {
+                UserManager.registFavoriteItem(nowUser, item.ItemID)
+                ContactItemManager.checkFavorite(item.ItemID)
+                listAdapter.submitList(ContactItemManager.sortWithHeader())
+                Log.i("click_test", "${UserManager.getUserByName(nowUser)}")
+            }
+        }.also { adapter.favoriteClick = it }
+    }
+
     private fun RecyclerView.initToolbarLogoWithScroll() {
-        val fadeInAnim = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         val logo = binding.ivToolbarLogo
 
         setOnScrollChangeListener { _, _, _, _, _ ->
-            if (canScrollVertically(-1) && logo.visibility == View.GONE) {
-                logo.run {
-                    startAnimation(fadeInAnim)
-                    visibility = View.VISIBLE
-                }
+            if (canScrollVertically(-1) && logo.visibility == gone) {
+                logo.setVisible()
             }
 
-            if (!canScrollVertically(-1)) {
-                logo.run {
-                    clearAnimation()
-                    visibility = View.GONE
-                }
+            if (!canScrollVertically(-1) && logo.visibility == visible) {
+                logo.setGone()
             }
         }
     }
 
-    override fun onContactDataAdded(item: ContactItems.Contents) {
-        ContactItemManager.addContent(item)
-        binding.recyclerViewContact.run {
-            adapter = ContactListAdapter(ContactItemManager.sortWithHeader())
-            adapter?.notifyDataSetChanged()
-        }
+    private fun View.setVisible() {
+        val fadeInAnim = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+
+        startAnimation(fadeInAnim)
+        visibility = visible
+    }
+
+    private fun View.setGone() {
+        val fadeOutAnim = AnimationUtils.loadAnimation(context, R.anim.fade_out)
+
+        startAnimation(fadeOutAnim)
+        visibility = gone
+    }
+
+    override fun onContactDataAdded(
+        name: String,
+        phoneNumber: String,
+        address: String,
+        location: String
+    ) {
+        ContactItemManager.addContent(name, phoneNumber, address, location)
+        listAdapter.submitList(ContactItemManager.sortWithHeader().toList())
     }
 }
 

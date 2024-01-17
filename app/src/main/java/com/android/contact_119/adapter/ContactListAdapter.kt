@@ -1,41 +1,43 @@
 package com.android.contact_119.adapter
 
-import android.content.ClipData.Item
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.api.load
-import com.android.contact_119.ContactDataListener
-import com.android.contact_119.DialogFragment
 import com.android.contact_119.R
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.ItemContactRecyclerViewBinding
 import com.android.contact_119.databinding.ItemHeaderRecyclerViewBinding
-import com.android.contact_119.fragment.ContactFragment
-import com.android.contact_119.manager.ContactItemManager
+import com.android.contact_119.manager.UserManager
+import com.android.contact_119.nowUser
 
 private const val TYPE_HEADER = 0
 private const val TYPE_CONTENT = 1
 
-class ContactListAdapter(var items: MutableList<ContactItems>) :
-    RecyclerView.Adapter<ViewHolder>() {
-
+class ContactListAdapter :
+    ListAdapter<ContactItems, RecyclerView.ViewHolder>(diffUtil) {
     var itemClick: ItemClick? = null
+    var favoriteClick: FavoriteClick? = null
 
     interface ItemClick {
-        fun onClick(list: MutableList<ContactItems>)
+        fun onClick(item: ContactItems)
+    }
+
+    interface FavoriteClick {
+        fun onFavoriteClick(item: ContactItems, position: Int)
     }
 
     inner class HeaderViewHolder(binding: ItemHeaderRecyclerViewBinding) :
-        ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root) {
         val location = binding.tvLocation
     }
 
     inner class ContentViewHolder(binding: ItemContactRecyclerViewBinding) :
-        ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root) {
         val ivThumbnail = binding.ivTumbnail
         val name = binding.tvItemTitle
         val favoriteIcon = binding.ivFavorite
@@ -43,7 +45,7 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (items[position]) {
+        return when (getItem(position)) {
             is ContactItems.Header -> TYPE_HEADER
             is ContactItems.Contents -> TYPE_CONTENT
         }
@@ -52,7 +54,7 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ViewHolder {
+    ): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
         return when (viewType) {
@@ -76,8 +78,8 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = getItem(position)
 
         if (item is ContactItems.Header) {
             with(holder as HeaderViewHolder) {
@@ -89,15 +91,20 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
             with(holder as ContentViewHolder) {
                 name.text = item.itemName
                 ivThumbnail.setThumbnailImage(item.thumbnailImage)
-                ivThumbnail.setOnClickListener {
-                    itemClick?.onClick(items)
+                itemView.setOnClickListener {
+                    itemClick?.onClick(item)
+                }
+                favoriteButton.setOnClickListener {
+                    favoriteClick?.onFavoriteClick(item, position)
+                }
+
+                if (item.favoriteUser) {
+                    favoriteIcon.load(R.drawable.favorite_big_on)
+                } else {
+                    favoriteIcon.load(R.drawable.favorite_big_off)
                 }
             }
         }
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
     }
 
     private fun ImageView.setThumbnailImage(image: Int?) {
@@ -106,5 +113,17 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
             return
         }
         load(image)
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<ContactItems>() {
+            override fun areItemsTheSame(oldItem: ContactItems, newItem: ContactItems): Boolean {
+                return oldItem.ItemID == newItem.ItemID
+            }
+
+            override fun areContentsTheSame(oldItem: ContactItems, newItem: ContactItems): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }
