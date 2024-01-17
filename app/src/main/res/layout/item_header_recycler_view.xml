@@ -3,23 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
     android:paddingHorizontal="24dp">
 
     <TextView
         android:id="@+id/tv_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="12dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="20dp"
+        android:letterSpacing="0.1"
         android:text="서울"
-        android:textSize="18sp"
+        android:textColor="@color/main_color"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/main_color"
+        android:layout_marginHorizontal="2dp"
+        android:background="@drawable/header_background"
         app:layout_constraintBottom_toBottomOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
