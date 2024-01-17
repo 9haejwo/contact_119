@@ -1,7 +1,9 @@
 package com.android.contact_119.manager
 
+import android.util.Log
 import com.android.contact_119.R
 import com.android.contact_119.data.ContactItems
+import com.android.contact_119.data.User
 
 const val SEOUL = "서울"
 const val BUSAN = "부산"
@@ -14,14 +16,15 @@ const val ULSAN = "울산"
 object ContactItemManager {
     var contactItems = mutableListOf<ContactItems>()
 
+    var idKey = 0L
     init {
         addHeader(SEOUL)
         addHeader(BUSAN)
         addHeader(DAEJEON)
         addHeader(DAEGU)
         addHeader(INCHEON)
-        addHeader(GWANGJOO)
         addHeader(ULSAN)
+        addHeader(GWANGJOO)
         addContent("서울대학교병원 응급의료센터", "02-2072-1182", "서울 종로구 대학로 101", SEOUL, R.drawable.seoul_univ_pic, R.drawable.seoul_univ_logo, )
         addContent("국립중앙의료원 응급의료센터", "02-2260-7114", "서울 중구 을지로 245", SEOUL, R.drawable.national_medi_pic, R.drawable.national_medi_logo)
         addContent("중앙대학교병원 응급의료센터", "02-6299-1339", "서울 동작구 흑석로 102",SEOUL, R.drawable.chung_ang_univ_pic, R.drawable.chung_ang_univ_logo)
@@ -42,20 +45,28 @@ object ContactItemManager {
     }
 
     fun addContent(name: String, phoneNumber: String, address: String,location: String, profileImage: Int? = null, picture: Int? = null) {
-        contactItems.add(ContactItems.Contents(name, phoneNumber, address, location, profileImage, picture))
+        contactItems.add(ContactItems.Contents(idKey, name, phoneNumber, address, location, profileImage, picture))
+        idKey++
     }
 
-    fun addContent(item: ContactItems.Contents) {
-        contactItems.add(item)
-    }
     fun addHeader(location: String) {
-        contactItems.add(ContactItems.Header(location))
+        contactItems.add(ContactItems.Header(idKey, location))
+        idKey++
     }
 
     fun getAllItems(): MutableList<ContactItems> {
         return contactItems
     }
 
+    fun checkFavorite(id: Long) {
+        val nowItem = contactItems.find { it.ItemID == id } as ContactItems.Contents
+
+        nowItem.favoriteUser = !nowItem.favoriteUser
+    }
+
+    fun getById(itemId: Long): ContactItems.Contents {
+        return contactItems.find { it.ItemID == itemId } as ContactItems.Contents
+    }
     fun sortWithHeader(): MutableList<ContactItems> {
         val temp = mutableListOf<ContactItems>()
         val headerList = contactItems.filter { it is ContactItems.Header }.toMutableList()
@@ -63,7 +74,11 @@ object ContactItemManager {
         for (i in headerList) {
             if (contactItems.any { it.location == i.location && it is ContactItems.Contents }) {
                 temp += i
-                temp += contactItems.filter { it is ContactItems.Contents && it.location == i.location }
+                contactItems.forEach {
+                    if (it is ContactItems.Contents && it.location == i.location ) {
+                        temp += it.copy()
+                    }
+                }
             }
         }
         return temp

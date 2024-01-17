@@ -63,16 +63,22 @@ class DialogFragment : DialogFragment() {
             checkPhoneNumber(etContact, ContactInputLayout)
             check(etName, NameInputLayout)
             check(etAddress, AddressInputLayout)
-            spinner.adapter = context?.let { ArrayAdapter.createFromResource(it,R.array.area,android.R.layout.simple_list_item_1) }
-            val area = when(spinner.selectedItemPosition){
-                0-> SEOUL
-                1-> BUSAN
-                2-> DAEJEON
-                3-> DAEGU
-                4-> INCHEON
-                5-> GWANGJOO
-                6-> ULSAN
-                else-> SEOUL
+            spinner.adapter = context?.let {
+                ArrayAdapter.createFromResource(
+                    it,
+                    R.array.area,
+                    android.R.layout.simple_list_item_1
+                )
+            }
+            val area = when (spinner.selectedItemPosition) {
+                0 -> SEOUL
+                1 -> BUSAN
+                2 -> DAEJEON
+                3 -> DAEGU
+                4 -> INCHEON
+                5 -> GWANGJOO
+                6 -> ULSAN
+                else -> SEOUL
             }
 
             btnAdd.setOnClickListener {
@@ -95,16 +101,20 @@ class DialogFragment : DialogFragment() {
                         getString(R.string.Address_error_message) else AddressInputLayout.error =
                         null
 
-
                     return@setOnClickListener
                 } else {
-                    val item = ContactItems.Contents(
-                        etName.text.toString(),
-                        etContact.text.toString(),
-                        etAddress.text.toString(),
-                        area, R.drawable.main_symbol
+//                    val item = ContactItems.Contents(
+//                        etName.text.toString(),
+//                        etContact.text.toString(),
+//                        etAddress.text.toString(),
+//                        area, R.drawable.main_symbol
+//                    )
+                    contactDataListener?.onContactDataAdded(
+                        etName.toText(),
+                        etContact.toText(),
+                        etAddress.toText(),
+                        area,
                     )
-                    contactDataListener?.onContactDataAdded(item)
                     dialog?.dismiss()
                 }
 
@@ -113,6 +123,10 @@ class DialogFragment : DialogFragment() {
                 dialog?.dismiss()
             }
         }
+    }
+
+    private fun TextInputEditText.toText(): String {
+        return text.toString()
     }
 
     //전화번호 유효성 체크
@@ -175,5 +189,5 @@ class DialogFragment : DialogFragment() {
 }
 
 interface ContactDataListener {
-    fun onContactDataAdded(item: ContactItems.Contents)
+    fun onContactDataAdded(name: String, phoneNumber: String, address: String, location: String)
 }
