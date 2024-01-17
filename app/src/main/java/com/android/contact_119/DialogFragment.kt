@@ -95,7 +95,6 @@ class DialogFragment : DialogFragment() {
                         getString(R.string.Address_error_message) else AddressInputLayout.error =
                         null
 
-
                     return@setOnClickListener
                 } else {
                     val item = ContactItems.Contents(

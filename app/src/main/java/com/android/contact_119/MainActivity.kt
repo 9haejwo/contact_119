@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.android.contact_119.adapter.ViewPagerAdapter
 import com.android.contact_119.databinding.ActivityMainBinding
+import com.android.contact_119.manager.UserManager
 import com.google.android.material.tabs.TabLayoutMediator
+
+val nowUser = "홍길동"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

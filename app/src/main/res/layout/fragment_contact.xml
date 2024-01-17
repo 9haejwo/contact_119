@@ -28,8 +28,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_collapseParallaxMultiplier="0.5"
-                    app:layout_collapseMode="none">
+                    app:layout_collapseMode="none"
+                    app:layout_collapseParallaxMultiplier="0.5">
 
                     <ImageView
                         android:layout_width="150dp"
@@ -46,10 +46,10 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@color/white"
-                app:layout_collapseMode="pin">
+                android:background="@color/white">
 
                 <ImageView
                     android:id="@+id/iv_toolbar_logo"

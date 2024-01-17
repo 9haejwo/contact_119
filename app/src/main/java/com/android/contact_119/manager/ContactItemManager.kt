@@ -20,8 +20,8 @@ object ContactItemManager {
         addHeader(DAEJEON)
         addHeader(DAEGU)
         addHeader(INCHEON)
-        addHeader(GWANGJOO)
         addHeader(ULSAN)
+        addHeader(GWANGJOO)
         addContent("서울대학교병원 응급의료센터", "02-2072-1182", "서울 종로구 대학로 101", SEOUL, R.drawable.seoul_univ_pic, R.drawable.seoul_univ_logo, )
         addContent("국립중앙의료원 응급의료센터", "02-2260-7114", "서울 중구 을지로 245", SEOUL, R.drawable.national_medi_pic, R.drawable.national_medi_logo)
         addContent("중앙대학교병원 응급의료센터", "02-6299-1339", "서울 동작구 흑석로 102",SEOUL, R.drawable.chung_ang_univ_pic, R.drawable.chung_ang_univ_logo)
@@ -48,6 +48,7 @@ object ContactItemManager {
     fun addContent(item: ContactItems.Contents) {
         contactItems.add(item)
     }
+
     fun addHeader(location: String) {
         contactItems.add(ContactItems.Header(location))
     }
