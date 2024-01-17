@@ -24,7 +24,7 @@ const val visible = View.VISIBLE
 
 class ContactFragment : Fragment(), ContactDataListener {
     private val binding by lazy { FragmentContactBinding.inflate(layoutInflater) }
-
+    private val listAdapter by lazy { ContactListAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,13 +46,11 @@ class ContactFragment : Fragment(), ContactDataListener {
     }
 
     private fun initRecyclerView() {
-        val listAdapter = ContactListAdapter(ContactItemManager.sortWithHeader())
-
         with(binding.recyclerViewContact) {
+            listAdapter.submitList(ContactItemManager.sortWithHeader())
             adapter = listAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        binding.recyclerViewContact.adapter = ContactListAdapter(ContactItemManager.sortWithHeader())
     }
 
     private fun initToolbarLogo() {
@@ -70,10 +68,8 @@ class ContactFragment : Fragment(), ContactDataListener {
     }
 
     private fun initInput() {
-        var listAdapter = binding.recyclerViewContact.adapter as ContactListAdapter
         clickFavorite(listAdapter)
         clickView(listAdapter)
-        listAdapter.submitList(ContactItemManager.sortWithHeader())
     }
 
     fun clickView(adapter: ContactListAdapter) {
@@ -84,13 +80,15 @@ class ContactFragment : Fragment(), ContactDataListener {
         }.also { adapter.itemClick = it }
     }
 
-    fun clickFavorite(listAdapter: ContactListAdapter) {
+    fun clickFavorite(adapter: ContactListAdapter) {
         object : ContactListAdapter.FavoriteClick {
             override fun onFavoriteClick(item: ContactItems, position: Int) {
-                UserManager.addFavoriteItem(nowUser, item)
-                Log.i("click_test", "click favorite")
+                UserManager.registFavoriteItem(nowUser, item)
+                ContactItemManager.checkFavorite(item.ItemID)
+                listAdapter.submitList(ContactItemManager.sortWithHeader())
+                Log.i("click_test", "${UserManager.getUserByName(nowUser)}")
             }
-        }.also { listAdapter.favoriteClick = it }
+        }.also { adapter.favoriteClick = it }
     }
 
     private fun RecyclerView.initToolbarLogoWithScroll() {
@@ -121,9 +119,14 @@ class ContactFragment : Fragment(), ContactDataListener {
         visibility = gone
     }
 
-    override fun onContactDataAdded(item: ContactItems.Contents) {
-        ContactItemManager.addContent(item)
-        binding.recyclerViewContact.adapter = ContactListAdapter(ContactItemManager.sortWithHeader())
+    override fun onContactDataAdded(
+        name: String,
+        phoneNumber: String,
+        address: String,
+        location: String
+    ) {
+        ContactItemManager.addContent(name, phoneNumber, address, location)
+        listAdapter.submitList(ContactItemManager.sortWithHeader().toList())
     }
 }
 

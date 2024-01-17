@@ -18,7 +18,7 @@ import com.android.contact_119.nowUser
 private const val TYPE_HEADER = 0
 private const val TYPE_CONTENT = 1
 
-class ContactListAdapter(var items: MutableList<ContactItems>) :
+class ContactListAdapter :
     ListAdapter<ContactItems, RecyclerView.ViewHolder>(diffUtil) {
     var itemClick: ItemClick? = null
     var favoriteClick: FavoriteClick? = null
@@ -45,7 +45,7 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (items[position]) {
+        return when (getItem(position)) {
             is ContactItems.Header -> TYPE_HEADER
             is ContactItems.Contents -> TYPE_CONTENT
         }
@@ -79,7 +79,7 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = items[position]
+        val item = getItem(position)
 
         if (item is ContactItems.Header) {
             with(holder as HeaderViewHolder) {
@@ -98,20 +98,13 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
                     favoriteClick?.onFavoriteClick(item, position)
                 }
 
-                Log.i("click_test", "${UserManager.getUserByName(nowUser).favorite}")
-
-                if (UserManager.getUserByName(nowUser).favorite.contains(item)) {
-                    Log.i("click_test", "드루와")
+                if (item.favoriteUser) {
                     favoriteIcon.load(R.drawable.favorite_big_on)
                 } else {
                     favoriteIcon.load(R.drawable.favorite_big_off)
                 }
             }
         }
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
     }
 
     private fun ImageView.setThumbnailImage(image: Int?) {
@@ -125,7 +118,7 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<ContactItems>() {
             override fun areItemsTheSame(oldItem: ContactItems, newItem: ContactItems): Boolean {
-                return oldItem == newItem
+                return oldItem.ItemID == newItem.ItemID
             }
 
             override fun areContentsTheSame(oldItem: ContactItems, newItem: ContactItems): Boolean {

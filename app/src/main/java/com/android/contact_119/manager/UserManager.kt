@@ -1,6 +1,5 @@
 package com.android.contact_119.manager
 
-import android.util.Log
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.data.User
 import com.android.contact_119.nowUser
@@ -19,7 +18,12 @@ object UserManager {
         return users.find { it.userName == name } ?: User("홍길동", "010-1234-1234", "Z형", "스파르타시 디스이즈길 123")
     }
 
-    fun addFavoriteItem(name: String, item: ContactItems) {
-        getUserByName(name).favorite.add(item as ContactItems.Contents)
+    fun registFavoriteItem(name: String, item: ContactItems) {
+        val user = getUserByName(name)
+        if (user.favorite.contains(item)) {
+            user.favorite.remove(item)
+        } else {
+            user.favorite.add(item as ContactItems.Contents)
+        }
     }
 }
