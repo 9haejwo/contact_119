@@ -24,7 +24,6 @@ import com.android.contact_119.manager.GWANGJOO
 import com.android.contact_119.manager.INCHEON
 import com.android.contact_119.manager.SEOUL
 import com.android.contact_119.manager.ULSAN
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 
@@ -64,16 +63,7 @@ class DialogFragment : DialogFragment() {
             check(etName, NameInputLayout)
             check(etAddress, AddressInputLayout)
             spinner.adapter = context?.let { ArrayAdapter.createFromResource(it,R.array.area,android.R.layout.simple_list_item_1) }
-            val area = when(spinner.selectedItemPosition){
-                0-> SEOUL
-                1-> BUSAN
-                2-> DAEJEON
-                3-> DAEGU
-                4-> INCHEON
-                5-> GWANGJOO
-                6-> ULSAN
-                else-> SEOUL
-            }
+
 
             btnAdd.setOnClickListener {
                 val nameEmpty = etName.text!!.isEmpty()
@@ -97,6 +87,16 @@ class DialogFragment : DialogFragment() {
 
                     return@setOnClickListener
                 } else {
+                    val area = when(spinner.selectedItemPosition){
+                        0-> SEOUL
+                        1-> BUSAN
+                        2-> DAEJEON
+                        3-> DAEGU
+                        4-> INCHEON
+                        5-> GWANGJOO
+                        6-> ULSAN
+                        else-> SEOUL
+                    }
                     val item = ContactItems.Contents(
                         etName.text.toString(),
                         etContact.text.toString(),
