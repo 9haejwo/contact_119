@@ -83,7 +83,7 @@ class ContactFragment : Fragment(), ContactDataListener {
     fun clickFavorite(adapter: ContactListAdapter) {
         object : ContactListAdapter.FavoriteClick {
             override fun onFavoriteClick(item: ContactItems, position: Int) {
-                UserManager.registFavoriteItem(nowUser, item)
+                UserManager.registFavoriteItem(nowUser, item.ItemID)
                 ContactItemManager.checkFavorite(item.ItemID)
                 listAdapter.submitList(ContactItemManager.sortWithHeader())
                 Log.i("click_test", "${UserManager.getUserByName(nowUser)}")

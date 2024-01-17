@@ -8,5 +8,5 @@ data class User(
     var bloodType: String,
     var location: String,
     var profileImage: URI? = null,
-    var favorite: MutableList<ContactItems.Contents> = mutableListOf()
+    var favorite: MutableList<Long> = mutableListOf()
 )

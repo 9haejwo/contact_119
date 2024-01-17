@@ -18,12 +18,13 @@ object UserManager {
         return users.find { it.userName == name } ?: User("홍길동", "010-1234-1234", "Z형", "스파르타시 디스이즈길 123")
     }
 
-    fun registFavoriteItem(name: String, item: ContactItems) {
+    fun registFavoriteItem(name: String, itemID: Long) {
         val user = getUserByName(name)
-        if (user.favorite.contains(item)) {
-            user.favorite.remove(item)
+
+        if (user.favorite.contains(itemID)) {
+            user.favorite.remove(itemID)
         } else {
-            user.favorite.add(item as ContactItems.Contents)
+            user.favorite.add(itemID)
         }
     }
 }
