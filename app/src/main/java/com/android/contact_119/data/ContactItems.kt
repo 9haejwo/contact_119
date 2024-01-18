@@ -15,6 +15,6 @@ sealed class ContactItems(val ItemID: Long, open val location: String) {
         override val location: String,
         var picture: Int? = null,
         var thumbnailImage: Int? = null,
-        var favoriteUser: Boolean = false,
+        var favorite: Boolean = false,
     ) : ContactItems(contentID, location)
 }
