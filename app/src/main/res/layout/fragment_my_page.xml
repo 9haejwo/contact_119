@@ -11,4 +11,12 @@
         android:layout_height="match_parent"
         android:text="마이페이지 프래그먼트" />
 
+    <Button
+        android:id="@+id/btn_data_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="데이터 확인"
+        android:textSize="40dp" />
+
 </FrameLayout>

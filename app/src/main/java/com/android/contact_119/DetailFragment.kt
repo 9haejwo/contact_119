@@ -14,14 +14,14 @@ private const val ARG_PARAM2 = "param2"
 
 class DetailFragment : Fragment() {
     private val binding by lazy { FragmentDetailBinding.inflate(layoutInflater) }
-    private var param1: Long? = null
-    private var param2: String? = null
+    private var itemID: Long? = null
+    private var nowUser: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getLong(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            itemID = it.getLong(ARG_PARAM1)
+            nowUser = it.getString(ARG_PARAM2)
         }
     }
 
@@ -36,7 +36,7 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.ivDetail.setOnClickListener {
-            Log.i("click_test", "${ContactItemManager.getById(param1 ?: 0)}, ${param2}")
+            Log.i("click_test", "${ContactItemManager.getById(itemID ?: 0)}, $nowUser")
         }
     }
 
