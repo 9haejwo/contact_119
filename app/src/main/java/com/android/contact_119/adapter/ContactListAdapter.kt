@@ -12,6 +12,7 @@ import com.android.contact_119.R
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.ItemContactRecyclerViewBinding
 import com.android.contact_119.databinding.ItemHeaderRecyclerViewBinding
+import com.android.contact_119.manager.ContactItemManager
 import com.android.contact_119.manager.UserManager
 import com.android.contact_119.nowUser
 
@@ -133,4 +134,8 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
             }
         }
     }
+    fun getPosition(position: Int): ContactItems {
+        return ContactItemManager.sortWithHeader()[position]
+    }
+
 }

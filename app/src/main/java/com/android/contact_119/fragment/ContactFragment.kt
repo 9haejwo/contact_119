@@ -129,7 +129,6 @@ class ContactFragment : Fragment(), ContactDataListener {
     override fun onContactDataAdded(item: ContactItems.Contents) {
         ContactItemManager.addContent(item)
         binding.recyclerViewContact.adapter = ContactListAdapter(ContactItemManager.sortWithHeader())
-
     }
 
     override fun onResume() {
