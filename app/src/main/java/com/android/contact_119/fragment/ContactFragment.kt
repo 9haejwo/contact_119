@@ -32,7 +32,6 @@ class ContactFragment : Fragment(), ContactDataListener {
     private val listAdapter by lazy { ContactListAdapter(layoutManager) }
     private val layoutManager = GridLayoutManager(context, 1)
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,13 +52,10 @@ class ContactFragment : Fragment(), ContactDataListener {
     }
 
     private fun initRecyclerView() {
-
         with(binding.recyclerViewContact) {
             itemAnimator = null
             layoutManager = layoutManager
-            adapter = listAdapter.apply {
-                submitList(ContactItemManager.sortAllWithHeader())
-            }
+            adapter = listAdapter
         }
     }
 
@@ -161,6 +157,7 @@ class ContactFragment : Fragment(), ContactDataListener {
             }
         }
     }
+
     fun initRecyclerViewRefresher(fragment: DetailFragment) {
         object : DetailFragment.RefreshRecyclerView {
             override fun refreshRecycler(list: MutableList<ContactItems>) {
@@ -169,4 +166,8 @@ class ContactFragment : Fragment(), ContactDataListener {
         }.also { fragment.refrecher = it }
     }
 
+    override fun onResume() {
+        super.onResume()
+        listAdapter.submitList(ContactItemManager.sortAllWithHeader())
+    }
 }

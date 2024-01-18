@@ -28,7 +28,6 @@ class DetailFragment : Fragment() {
             itemID = it.getLong(ARG_PARAM1)
             nowUser = it.getString(ARG_PARAM2)
         }
-
     }
 
     override fun onCreateView(
@@ -37,7 +36,6 @@ class DetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

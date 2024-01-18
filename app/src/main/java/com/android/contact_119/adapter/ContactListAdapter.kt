@@ -1,6 +1,7 @@
 package com.android.contact_119.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,6 +20,7 @@ import com.android.contact_119.databinding.ItemHeaderRecyclerViewBinding
 const val TYPE_HEADER = 0
 const val TYPE_CONTENT_LIST = 1
 const val TYPE_CONTENT_GRID = 2
+
 
 class ContactListAdapter(private val layoutManager: GridLayoutManager) :
     ListAdapter<ContactItems, RecyclerView.ViewHolder>(diffUtil) {
