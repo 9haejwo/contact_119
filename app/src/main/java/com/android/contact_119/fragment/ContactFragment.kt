@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.contact_119.ContactDataListener
 import com.android.contact_119.DialogFragment
 import com.android.contact_119.R
+import com.android.contact_119.SwipeHelperCallback
 import com.android.contact_119.adapter.ContactListAdapter
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentContactBinding
@@ -51,6 +53,9 @@ class ContactFragment : Fragment(), ContactDataListener {
         with(binding.recyclerViewContact) {
             adapter = listAdapter
             layoutManager = LinearLayoutManager(context)
+            val swipeHelperCallback = SwipeHelperCallback(context,listAdapter)
+            val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
+            itemTouchHelper.attachToRecyclerView(binding.recyclerViewContact)
         }
         binding.recyclerViewContact.adapter = ContactListAdapter(ContactItemManager.sortWithHeader())
     }
@@ -124,6 +129,12 @@ class ContactFragment : Fragment(), ContactDataListener {
     override fun onContactDataAdded(item: ContactItems.Contents) {
         ContactItemManager.addContent(item)
         binding.recyclerViewContact.adapter = ContactListAdapter(ContactItemManager.sortWithHeader())
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initRecyclerView()
     }
 }
 
