@@ -45,11 +45,9 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         itemID?.let { id ->
             val contactItem = ContactItemManager.getById(id)
-
-
-
             binding.tvHospital.text = contactItem.itemName
             binding.tvPhoneNum.text = contactItem.phoneNumber
             binding.tvAddr.text = contactItem.address
@@ -92,7 +90,6 @@ class DetailFragment : Fragment() {
 
 
 
-    //
     companion object {
         @JvmStatic
         fun newInstance(param1: Long, param2: String) =

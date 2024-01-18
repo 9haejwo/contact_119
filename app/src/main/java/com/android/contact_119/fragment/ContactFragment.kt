@@ -76,7 +76,7 @@ class ContactFragment : Fragment(), ContactDataListener {
     fun clickView(adapter: ContactListAdapter) {
         object : ContactListAdapter.ItemClick {
             override fun onClick(item: ContactItems) {
-                val detailFragment = DetailFragment.newInstance(item.ItemID, nowUser)
+                val detailFragment = DetailFragment.newInstance(item.ItemID, nowUser) //아이템 아이디 유저이름
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.container, detailFragment)
                     .addToBackStack(null)
