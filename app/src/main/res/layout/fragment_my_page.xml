@@ -1,14 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyPageFragment">
+    android:background="@color/white">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="마이페이지 프래그먼트" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_contents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_top_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/horizental_logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/top_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="#DF3A72"
+                app:layout_constraintTop_toBottomOf="@id/iv_top_logo" />
+
+            <ImageView
+                android:id="@+id/img_profil"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/user_sample"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/top_line" />
+
+
+            <TextView
+                android:id="@+id/tv_uesrname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="홍길동"
+                android:textSize="25sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_profil" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/iconItemCardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_uesrname">
+
+                <TextView
+                    android:id="@+id/tv_bloodtype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#DF3A72"
+                    android:text="AB형"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_phonenum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="010-0000-0000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iconItemCardView"
+
+                />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/iconItemCardView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_phonenum">
+
+                <TextView
+                    android:id="@+id/tv_locate"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="#DF3A72"
+                    android:paddingStart="12dp"
+                    android:text="지역"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_detaillocate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="서울특별시 용산구 한강대로 405 서울역 광장"
+                android:textSize="15dp"
+                app:layout_constraintStart_toStartOf="@id/iconItemCardView2"
+                app:layout_constraintTop_toBottomOf="@+id/iconItemCardView2" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/iconItemCardView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detaillocate">
+
+                <TextView
+                    android:id="@+id/tv_liked"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="#DF3A72"
+                    android:paddingStart="12dp"
+                    android:text="즐겨찾기"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="등록된 즐겨찾기가 없습니다"
+            android:textColor="#969696"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_contents" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mypage_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_contents" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

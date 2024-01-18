@@ -1,17 +1,13 @@
 package com.android.contact_119
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.android.contact_119.adapter.ContactListAdapter
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDetailBinding
-import com.android.contact_119.fragment.ContactFragment
 import com.android.contact_119.manager.ContactItemManager
-import com.google.android.material.snackbar.Snackbar
 
 private const val ARG_PARAM1 = "param1"  //아이템 아이디
 private const val ARG_PARAM2 = "param2"  //user 이름
@@ -28,16 +24,14 @@ class DetailFragment : Fragment() {
             itemID = it.getLong(ARG_PARAM1)
             nowUser = it.getString(ARG_PARAM2)
         }
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

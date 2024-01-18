@@ -29,9 +29,8 @@ const val visible = View.VISIBLE
 
 class ContactFragment : Fragment(), ContactDataListener {
     private val binding by lazy { FragmentContactBinding.inflate(layoutInflater) }
-    private val listAdapter by lazy { ContactListAdapter(layoutManager) }
-    private val layoutManager = GridLayoutManager(context, 1)
-
+    private val listAdapter by lazy { ContactListAdapter(gridLayoutManager) }
+    private val gridLayoutManager = GridLayoutManager(context, 1)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,13 +52,10 @@ class ContactFragment : Fragment(), ContactDataListener {
     }
 
     private fun initRecyclerView() {
-
         with(binding.recyclerViewContact) {
             itemAnimator = null
-            layoutManager = layoutManager
-            adapter = listAdapter.apply {
-                submitList(ContactItemManager.sortAllWithHeader())
-            }
+            layoutManager = gridLayoutManager
+            adapter = listAdapter
         }
     }
 
@@ -135,15 +131,14 @@ class ContactFragment : Fragment(), ContactDataListener {
         binding.btnLayoutChange.setOnClickListener {
             convertSpanCount(it as ImageView)
         }
-        binding.recyclerViewContact.layoutManager = layoutManager
-
     }
 
     private fun convertSpanCount(btn: ImageView) {
-        with(layoutManager) {
+        with(gridLayoutManager) {
             if (spanCount == 1) {
                 spanCount = 3
                 btn.setVisibleFadeIn()
+//                setGridLayoutHeder()
                 btn.load(R.drawable.list_icon)
             } else {
                 spanCount = 1
@@ -155,12 +150,13 @@ class ContactFragment : Fragment(), ContactDataListener {
 
     private fun setGridLayoutHeder() {
         Log.i("span_size_test", "click")
-        layoutManager.spanSizeLookup = object : SpanSizeLookup() {
+        gridLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return if (position == 0) 3 else 1
             }
         }
     }
+
     fun initRecyclerViewRefresher(fragment: DetailFragment) {
         object : DetailFragment.RefreshRecyclerView {
             override fun refreshRecycler(list: MutableList<ContactItems>) {
@@ -169,4 +165,8 @@ class ContactFragment : Fragment(), ContactDataListener {
         }.also { fragment.refrecher = it }
     }
 
+    override fun onResume() {
+        super.onResume()
+        listAdapter.submitList(ContactItemManager.sortAllWithHeader())
+    }
 }

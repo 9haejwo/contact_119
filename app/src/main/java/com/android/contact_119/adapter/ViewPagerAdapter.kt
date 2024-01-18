@@ -16,5 +16,6 @@ class ViewPagerAdapter(private val mainActivity: MainActivity) :
             1 -> MyPageFragment()
             else -> throw IllegalStateException("포지션 에러")
         }
+
     }
 }
