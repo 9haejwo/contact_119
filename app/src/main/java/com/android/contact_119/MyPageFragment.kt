@@ -1,11 +1,17 @@
 package com.android.contact_119
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.contact_119.adapter.ContactListAdapter
 import com.android.contact_119.databinding.FragmentMyPageBinding
+import com.android.contact_119.manager.ContactItemManager
+import com.example.a115make.MyAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +42,21 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initRecyclerView()
+
+    }
+
+
+
+
+    private fun initRecyclerView(){
+        Log.i("listadaptercheck", "click")
+        val listAdapter = ContactListAdapter()
+        binding.mypageRecyclerview.adapter = listAdapter
+        binding.mypageRecyclerview.layoutManager = LinearLayoutManager(context)
+        listAdapter.submitList(ContactItemManager.sortFavoriteWithHeader())
+
     }
 
     companion object {
@@ -49,3 +70,24 @@ class MyPageFragment : Fragment() {
             }
     }
 }
+
+
+//class MypageActivity : AppCompatActivity() {
+//
+//    private lateinit var binding: ActivityMainBinding
+//
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//        binding = ActivityMypageBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+//
+//        val dataList = mutableListOf<User>()
+//
+//        val adapter = MyAdapter(dataList)
+//        binding.recyclerView.adapter = adapter
+//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+//
+//    }
+//}
