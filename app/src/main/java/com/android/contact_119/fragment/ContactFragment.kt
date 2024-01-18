@@ -1,12 +1,16 @@
 package com.android.contact_119.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.android.contact_119.ContactDataListener
 import com.android.contact_119.DetailFragment
 import com.android.contact_119.DialogFragment
@@ -25,7 +29,9 @@ const val visible = View.VISIBLE
 
 class ContactFragment : Fragment(), ContactDataListener {
     private val binding by lazy { FragmentContactBinding.inflate(layoutInflater) }
-    private val listAdapter by lazy { ContactListAdapter() }
+    private val listAdapter by lazy { ContactListAdapter(layoutManager) }
+    private val layoutManager = GridLayoutManager(context, 1)
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,20 +52,11 @@ class ContactFragment : Fragment(), ContactDataListener {
         initInput()
     }
 
-    var spanSize = 3
-    val gridLayoutManager = GridLayoutManager(context, spanSize)
     private fun initRecyclerView() {
+
         with(binding.recyclerViewContact) {
             itemAnimator = null
-            layoutManager = GridLayoutManager(context, 1)
-//            layoutManager = gridLayoutManager.also {
-//                it.spanSizeLookup = object : SpanSizeLookup() {
-//                    override fun getSpanSize(position: Int): Int = when (position) {
-//                        0 -> spanSize
-//                        else -> 1
-//                    }
-//                }
-//            }
+            layoutManager = layoutManager
             adapter = listAdapter.apply {
                 submitList(ContactItemManager.sortAllWithHeader())
             }
@@ -107,28 +104,69 @@ class ContactFragment : Fragment(), ContactDataListener {
     private fun initInput() {
         clickView()
         clickFavorite()
+        clickLayoutChange()
     }
 
-    fun clickView() {
+    private fun clickView() {
         object : ContactListAdapter.ItemClick {
             override fun onClick(item: ContactItems) {
                 val detailFragment = DetailFragment.newInstance(item.ItemID, nowUser)
 
+                initRecyclerViewRefresher(detailFragment)
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.container, detailFragment)
-                    .addToBackStack(null)
+                    .addToBackStack("1")
                     .commit()
             }
         }.also { listAdapter.itemClick = it }
     }
 
-    fun clickFavorite() {
+    private fun clickFavorite() {
         object : ContactListAdapter.FavoriteClick {
             override fun onFavoriteClick(item: ContactItems, position: Int) {
                 UserManager.registFavoriteItem(nowUser, item.ItemID)
                 ContactItemManager.checkFavorite(item.ItemID)
-                listAdapter.submitList(ContactItemManager.sortAllWithHeader())
+                listAdapter.submitList(ContactItemManager.sortAllWithHeader().toList())
             }
         }.also { listAdapter.favoriteClick = it }
     }
+
+    private fun clickLayoutChange() {
+        binding.btnLayoutChange.setOnClickListener {
+            convertSpanCount(it as ImageView)
+        }
+        binding.recyclerViewContact.layoutManager = layoutManager
+
+    }
+
+    private fun convertSpanCount(btn: ImageView) {
+        with(layoutManager) {
+            if (spanCount == 1) {
+                spanCount = 3
+                btn.setVisibleFadeIn()
+                btn.load(R.drawable.list_icon)
+            } else {
+                spanCount = 1
+                btn.setVisibleFadeIn()
+                btn.load(R.drawable.grid_icon)
+            }
+        }
+    }
+
+    private fun setGridLayoutHeder() {
+        Log.i("span_size_test", "click")
+        layoutManager.spanSizeLookup = object : SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (position == 0) 3 else 1
+            }
+        }
+    }
+    fun initRecyclerViewRefresher(fragment: DetailFragment) {
+        object : DetailFragment.RefreshRecyclerView {
+            override fun refreshRecycler(list: MutableList<ContactItems>) {
+                listAdapter.submitList(list)
+            }
+        }.also { fragment.refrecher = it }
+    }
+
 }

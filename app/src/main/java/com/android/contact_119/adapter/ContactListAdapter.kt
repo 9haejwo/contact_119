@@ -3,7 +3,10 @@ package com.android.contact_119.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
@@ -17,11 +20,10 @@ const val TYPE_HEADER = 0
 const val TYPE_CONTENT_LIST = 1
 const val TYPE_CONTENT_GRID = 2
 
-class ContactListAdapter :
+class ContactListAdapter(private val layoutManager: GridLayoutManager) :
     ListAdapter<ContactItems, RecyclerView.ViewHolder>(diffUtil) {
     var itemClick: ItemClick? = null
     var favoriteClick: FavoriteClick? = null
-
 
     interface ItemClick {
         fun onClick(item: ContactItems)
@@ -36,27 +38,42 @@ class ContactListAdapter :
         val location = binding.tvLocation
     }
 
+    interface ContactViewHolder {
+        val ivThumbnail: ImageView
+        val name: TextView
+        val favoriteIcon: ImageView
+        val favoriteButton: ConstraintLayout
+        val itemView: ConstraintLayout
+    }
+
     inner class ContentViewHolder(binding: ItemContactRecyclerViewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val ivThumbnail = binding.ivTumbnail
-        val name = binding.tvItemTitle
-        val favoriteIcon = binding.ivFavorite
-        val favoriteButton = binding.btnFavorite
+        RecyclerView.ViewHolder(binding.root), ContactViewHolder {
+        override val ivThumbnail = binding.ivTumbnail
+        override val name = binding.tvItemTitle
+        override val favoriteIcon = binding.ivFavorite
+        override val favoriteButton = binding.btnFavorite
+        override val itemView = binding.layoutItemView
     }
 
     inner class ContentGridViewHolder(binding: ItemContactRecyclerViewGridBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val ivThumbnail = binding.ivTumbnail
-        val name = binding.tvItemTitle
-        val favoriteIcon = binding.ivFavorite
-        val favoriteButton = binding.btnFavorite
+        RecyclerView.ViewHolder(binding.root), ContactViewHolder {
+        override val ivThumbnail = binding.ivTumbnail
+        override val name = binding.tvItemTitle
+        override val favoriteIcon = binding.ivFavorite
+        override val favoriteButton = binding.btnFavorite
+        override val itemView = binding.layoutItemView
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is ContactItems.Header -> TYPE_HEADER
-            is ContactItems.Contents -> TYPE_CONTENT_LIST
-            else -> TYPE_CONTENT_GRID
+            is ContactItems.Contents -> {
+                if (layoutManager.spanCount == 1) {
+                    TYPE_CONTENT_LIST
+                } else {
+                    TYPE_CONTENT_GRID
+                }
+            }
         }
     }
 
@@ -83,6 +100,14 @@ class ContactListAdapter :
                 )
             )
 
+            TYPE_CONTENT_GRID -> ContentGridViewHolder(
+                ItemContactRecyclerViewGridBinding.inflate(
+                    inflater,
+                    parent,
+                    false
+                )
+            )
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -97,7 +122,7 @@ class ContactListAdapter :
         }
 
         if (item is ContactItems.Contents) {
-            with(holder as ContentViewHolder) {
+            with(holder as ContactViewHolder) {
                 name.text = item.itemName
                 ivThumbnail.setThumbnailImage(item.thumbnailImage)
                 itemView.setOnClickListener {

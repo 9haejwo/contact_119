@@ -104,7 +104,6 @@ class DialogFragment : DialogFragment() {
                         6 -> ULSAN
                         else -> SEOUL
                     }
-
                     contactDataListener?.onContactDataAdded(
                         etName.toText(),
                         etContact.toText(),

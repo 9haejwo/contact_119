@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.contact_119.databinding.FragmentMyPageBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -30,16 +28,19 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+
     }
 
     companion object {
-        @JvmStatic
         fun newInstance(param1: String, param2: String) =
             MyPageFragment().apply {
                 arguments = Bundle().apply {
