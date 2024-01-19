@@ -35,39 +35,42 @@ class SwipeHelperCallback(
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.adapterPosition
-        val item = adapter.getPosition(position) as? ContactItems.Contents
-        //오른쪽 스와이프 시 전화연결
-        if (direction == ItemTouchHelper.RIGHT) {
-            item?.let {
-                val phoneNumber = it.phoneNumber
-                Intent(Intent.ACTION_DIAL).apply {
-                    data = Uri.parse("tel:$phoneNumber")
-                    context.startActivity(this)
-                }
+        val item = adapter.getPosition(position) as ContactItems.Contents
+
+        //오른쪽 스와이프 시 전화연결 //왼쪽 스와이프 시 아이템 삭제
+        if (direction == ItemTouchHelper.RIGHT) callConnect(item) else removeContact(item)
+
+
+
+    }
+    override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
+        return defaultValue * 20
+    }
+
+    private fun callConnect(item: ContactItems.Contents) {
+        item.let {
+            val phoneNumber = it.phoneNumber
+            Intent(Intent.ACTION_DIAL).apply {
+                data = Uri.parse("tel:$phoneNumber")
+                context.startActivity(this)
             }
-            //왼쪽 스와이프 시 아이템 삭제
-        } else {
-            AlertDialog.Builder(context).apply {
-                setMessage("연락처를 삭제 하시겠습니까?")
-                setPositiveButton("확인") { _, _ ->
-                    item?.let {
-                        ContactItemManager.contactItems.remove(item)
-                        recyclerView.adapter =
-                            ContactListAdapter(ContactItemManager.sortWithHeader())
-                    }
-                }
-                setNegativeButton("취소") { _, _ ->
+        }
+    }
+    private fun removeContact(item: ContactItems.Contents) {
+        AlertDialog.Builder(context).apply {
+            setMessage("연락처를 삭제 하시겠습니까?")
+            setPositiveButton("확인") { _, _ ->
+                item.let {
+                    ContactItemManager.contactItems.remove(item)
                     recyclerView.adapter =
                         ContactListAdapter(ContactItemManager.sortWithHeader())
                 }
-                show()
             }
-
+            setNegativeButton("취소") { _, _ ->
+                recyclerView.adapter =
+                    ContactListAdapter(ContactItemManager.sortWithHeader())
+            }
+            show()
         }
     }
-
-    override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
-        return 0.5f
-    }
-
 }
