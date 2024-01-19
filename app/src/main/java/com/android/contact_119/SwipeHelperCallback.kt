@@ -60,7 +60,7 @@ class SwipeHelperCallback(
     }
 
     private fun removeContact(item: ContactItems.Contents) {
-        val imageView = ImageView(context).apply {
+        val logoImage = ImageView(context).apply {
             scaleType = ImageView.ScaleType.CENTER_CROP
             val width = LayoutParams.MATCH_PARENT
             val height = 500
@@ -71,21 +71,31 @@ class SwipeHelperCallback(
             item.thumbnailImage?.let { setImageResource(it) }
 
         }
-        val textView = TextView(context).apply {
+        val contactText = TextView(context).apply {
             textSize = 30f
             gravity = Gravity.CENTER
             item.phoneNumber.let { text = it }
         }
+        val messageText = TextView(context).apply {
+            textSize = 20f
+            gravity = Gravity.CENTER
+            layoutParams =
+                LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                    .apply {
+                        topMargin = 100
+                        bottomMargin = 50
+                    }
+            text = "연락처를 삭제 하시겠습니까?"
+        }
         val layout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            addView(imageView)
-            addView(textView)
+            addView(logoImage)
+            addView(contactText)
+            addView(messageText)
         }
 
         AlertDialog.Builder(context).apply {
             setView(layout)
-            setTitle("연락처를 삭제 하시겠습니까?")
-
             setPositiveButton("확인") { _, _ ->
                 item.let {
                     ContactItemManager.contactItems.remove(item)
