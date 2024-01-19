@@ -54,6 +54,7 @@ class DetailFragment : Fragment() {
             ivLike.checkFavorite(nowItem)
             ivDetail.load(nowItem.picture ?: R.drawable.hospital)
             detailLike.setOnClickListener { toggleFavorite() }
+            backArrow.setOnClickListener { parentFragmentManager.popBackStack() }
         }
     }
 
