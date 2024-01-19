@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDetailBinding
+import com.android.contact_119.fragment.ContactFragment
 import com.android.contact_119.manager.ContactItemManager
 
 private const val ARG_PARAM1 = "param1"  //아이템 아이디
@@ -37,8 +38,6 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         itemID?.let { id ->
             val contactItem = ContactItemManager.getById(id)
 
@@ -47,12 +46,9 @@ class DetailFragment : Fragment() {
             binding.tvAddr.text = contactItem.address
             binding.ivDetail.setImageResource(contactItem.picture ?: R.drawable.hospital)
         }
-
         binding.detailLike.setOnClickListener {
             toggleFavorite()
         }
-
-
     }
 
 
@@ -63,12 +59,18 @@ class DetailFragment : Fragment() {
             binding.ivLike.setImageResource(R.drawable.favorite_big_off)
             favoriteUser = false
             ContactItemManager.checkFavorite(itemID ?: 0)
-            refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader(), ContactItemManager.sortFavoriteWithHeader())
+            refrecher?.refreshRecycler(
+                ContactItemManager.sortAllWithHeader(),
+                ContactItemManager.sortFavoriteWithHeader(),
+            )
         } else {
             binding.ivLike.setImageResource(R.drawable.favorite_big_on)
             favoriteUser = true
             ContactItemManager.checkFavorite(itemID ?: 0)
-            refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader(), ContactItemManager.sortFavoriteWithHeader())
+            refrecher?.refreshRecycler(
+                ContactItemManager.sortAllWithHeader(),
+                ContactItemManager.sortFavoriteWithHeader(),
+            )
         }
     }
 
@@ -84,6 +86,9 @@ class DetailFragment : Fragment() {
     }
 
     interface RefreshRecyclerView {
-        fun refreshRecycler(allList: MutableList<ContactItems>, favoriteList: MutableList<ContactItems>)
+        fun refreshRecycler(
+            allList: MutableList<ContactItems>,
+            favoriteList: MutableList<ContactItems>,
+        )
     }
 }

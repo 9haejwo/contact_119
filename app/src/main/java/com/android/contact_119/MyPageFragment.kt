@@ -1,5 +1,6 @@
 package com.android.contact_119
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,7 +10,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.contact_119.databinding.FragmentMyPageBinding
 import com.android.contact_119.adapter.ContactListAdapter
+import com.android.contact_119.adapter.MyAdapter
+import com.android.contact_119.adapter.ViewPagerAdapter
 import com.android.contact_119.data.ContactItems
+import com.android.contact_119.fragment.ContactFragment
 import com.android.contact_119.manager.ContactItemManager
 import com.android.contact_119.manager.UserManager
 
@@ -17,7 +21,6 @@ class MyPageFragment : Fragment() {
     private val binding by lazy { FragmentMyPageBinding.inflate(layoutInflater) }
     private val layoutManager = GridLayoutManager(context, 1)
     private val listAdapter = ContactListAdapter(layoutManager)
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,11 +30,16 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
-        initInput()
+        setUP()
     }
 
-    private fun initRecyclerView(){
+    private fun setUP() {
+        initRecyclerView()
+        initInput()
+        updateView()
+    }
+
+    private fun initRecyclerView() {
         Log.i("my_page_test", "click")
 
         binding.mypageRecyclerview.adapter = listAdapter
@@ -42,6 +50,17 @@ class MyPageFragment : Fragment() {
     private fun initInput() {
         clickView()
         clickFavorite()
+    }
+
+    private fun updateView() {
+        val user = UserManager.getUserByName(nowUser)
+
+        with(binding) {
+            tvUesrname.text = user.userName
+            tvBloodtype.text = user.bloodType
+            tvDetaillocate.text = user.location
+            tvPhonenum.text = user.phoneNumber
+        }
     }
 
     private fun clickView() {
@@ -81,8 +100,8 @@ class MyPageFragment : Fragment() {
             ) {
                 listAdapter.submitList(favoriteList)
             }
-        }.also { fragment.refrecher = it }
+        }.also {
+            fragment.refrecher = it
+        }
     }
-
-
 }

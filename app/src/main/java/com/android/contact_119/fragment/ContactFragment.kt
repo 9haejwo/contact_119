@@ -36,6 +36,7 @@ class ContactFragment : Fragment(), ContactDataListener {
     private val listAdapter by lazy { ContactListAdapter(gridLayoutManager) }
     private val gridLayoutManager = GridLayoutManager(context, 1)
     private lateinit var itemTouchHelper: ItemTouchHelper
+    private val myPageRefresher: DetailFragment.RefreshRecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -136,6 +137,7 @@ class ContactFragment : Fragment(), ContactDataListener {
                 UserManager.registFavoriteItem(nowUser, item.ItemID)
                 ContactItemManager.checkFavorite(item.ItemID)
                 listAdapter.submitList(ContactItemManager.sortAllWithHeader().toList())
+                myPageRefresher?.refreshRecycler(ContactItemManager.sortAllWithHeader(), ContactItemManager.sortFavoriteWithHeader())
             }
         }.also { listAdapter.favoriteClick = it }
     }
