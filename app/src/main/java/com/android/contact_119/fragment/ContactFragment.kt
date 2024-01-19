@@ -53,11 +53,11 @@ class ContactFragment : Fragment(), ContactDataListener {
         with(binding.recyclerViewContact) {
             adapter = listAdapter
             layoutManager = LinearLayoutManager(context)
-            val swipeHelperCallback = SwipeHelperCallback(context,listAdapter)
+            val swipeHelperCallback =
+                SwipeHelperCallback(context, listAdapter, binding.recyclerViewContact)
             val itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
             itemTouchHelper.attachToRecyclerView(binding.recyclerViewContact)
         }
-        binding.recyclerViewContact.adapter = ContactListAdapter(ContactItemManager.sortWithHeader())
     }
 
     private fun initToolbarLogo() {
@@ -128,7 +128,8 @@ class ContactFragment : Fragment(), ContactDataListener {
 
     override fun onContactDataAdded(item: ContactItems.Contents) {
         ContactItemManager.addContent(item)
-        binding.recyclerViewContact.adapter = ContactListAdapter(ContactItemManager.sortWithHeader())
+        binding.recyclerViewContact.adapter =
+            ContactListAdapter(ContactItemManager.sortWithHeader())
     }
 
     override fun onResume() {

@@ -134,8 +134,8 @@ class ContactListAdapter(var items: MutableList<ContactItems>) :
             }
         }
     }
+
     fun getPosition(position: Int): ContactItems {
         return ContactItemManager.sortWithHeader()[position]
     }
-
 }
