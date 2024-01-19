@@ -14,7 +14,6 @@ import android.view.WindowManager.LayoutParams
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
-import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDialogBinding
 import com.android.contact_119.fragment.ContactFragment
 import com.android.contact_119.manager.BUSAN
@@ -71,7 +70,6 @@ class DialogFragment : DialogFragment() {
                 )
             }
 
-
             btnAdd.setOnClickListener {
                 val nameEmpty = etName.text!!.isEmpty()
                 val addressEmpty = etAddress.text!!.isEmpty()
@@ -94,12 +92,6 @@ class DialogFragment : DialogFragment() {
 
                     return@setOnClickListener
                 } else {
-//                    val item = ContactItems.Contents(
-//                        etName.text.toString(),
-//                        etContact.text.toString(),
-//                        etAddress.text.toString(),
-//                        area, R.drawable.main_symbol
-//                    )
                     val area = when (spinner.selectedItemPosition) {
                         0 -> SEOUL
                         1 -> BUSAN

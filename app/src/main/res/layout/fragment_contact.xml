@@ -32,6 +32,7 @@
                     app:layout_collapseParallaxMultiplier="0.5">
 
                     <ImageView
+                        android:id="@+id/iv_main_logo"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:scaleType="centerCrop"
@@ -63,6 +64,16 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_layout_change"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/grid_icon"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_add"
+                    app:layout_constraintEnd_toStartOf="@id/btn_add"
+                    app:layout_constraintTop_toTopOf="@id/btn_add" />
 
                 <ImageView
                     android:id="@+id/btn_add"
