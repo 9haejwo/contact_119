@@ -1,10 +1,12 @@
 package com.android.contact_119
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import coil.api.load
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDetailBinding
 import com.android.contact_119.manager.ContactItemManager
@@ -16,8 +18,8 @@ class DetailFragment : Fragment() {
     private val binding by lazy { FragmentDetailBinding.inflate(layoutInflater) }
     private var itemID: Long? = null
     private var nowUser: String? = null
-    private var favoriteUser = false
-
+    private lateinit var nowItem: ContactItems.Contents
+    var refresher: RefreshRecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,53 +27,56 @@ class DetailFragment : Fragment() {
             itemID = it.getLong(ARG_PARAM1)
             nowUser = it.getString(ARG_PARAM2)
         }
+        nowItem = ContactItemManager.getById(itemID ?: 0)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        itemID?.let { id ->
-            val contactItem = ContactItemManager.getById(id)
-
-            binding.tvHospital.text = contactItem.itemName
-            binding.tvPhoneNum.text = contactItem.phoneNumber
-            binding.tvAddr.text = contactItem.address
-            binding.ivDetail.setImageResource(contactItem.picture ?: R.drawable.hospital)
-        }
-
-        binding.detailLike.setOnClickListener {
-            toggleFavorite()
-        }
-
-
+        setUP()
     }
 
+    private fun setUP() {
+        updateItem()
+    }
 
-    var refrecher: RefreshRecyclerView? = null
+    private fun updateItem() {
+        with(binding) {
+            tvHospital.text = nowItem.itemName
+            tvPhoneNum.text = nowItem.phoneNumber
+            tvAddr.text = nowItem.address
+            ivLike.checkFavorite(nowItem)
+            ivDetail.load(nowItem.picture ?: R.drawable.hospital)
+            detailLike.setOnClickListener { toggleFavorite() }
+        }
+    }
+
+    private fun ImageView.checkFavorite(item: ContactItems.Contents) {
+        load(if (item.favorite) R.drawable.favorite_big_on else R.drawable.favorite_big_off)
+    }
 
     private fun toggleFavorite() {
-        if (favoriteUser) {
-            binding.ivLike.setImageResource(R.drawable.favorite_big_off)
-            favoriteUser = false
-            ContactItemManager.checkFavorite(itemID ?: 0)
-            refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader())
+        if (nowItem.favorite) {
+            binding.ivLike.setFavorite(R.drawable.favorite_big_off)
         } else {
-            binding.ivLike.setImageResource(R.drawable.favorite_big_on)
-            favoriteUser = true
-            ContactItemManager.checkFavorite(itemID ?: 0)
-            refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader())
+            binding.ivLike.setFavorite(R.drawable.favorite_big_on)
         }
     }
 
+    private fun ImageView.setFavorite(resource: Int) {
+        load(resource)
+        ContactItemManager.toggleFavorite(nowItem.ItemID)
+        refresher?.refreshRecycler(
+            ContactItemManager.sortAllWithHeader(),
+            ContactItemManager.sortFavoriteWithHeader(),
+        )
+    }
 
     companion object {
         fun newInstance(param1: Long, param2: String) =
@@ -84,6 +89,9 @@ class DetailFragment : Fragment() {
     }
 
     interface RefreshRecyclerView {
-        fun refreshRecycler(list: MutableList<ContactItems>)
+        fun refreshRecycler(
+            allList: MutableList<ContactItems>,
+            favoriteList: MutableList<ContactItems>,
+        )
     }
 }

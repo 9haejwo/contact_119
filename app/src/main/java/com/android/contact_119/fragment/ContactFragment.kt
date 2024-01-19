@@ -36,6 +36,7 @@ class ContactFragment : Fragment(), ContactDataListener {
     private val listAdapter by lazy { ContactListAdapter(gridLayoutManager) }
     private val gridLayoutManager = GridLayoutManager(context, 1)
     private lateinit var itemTouchHelper: ItemTouchHelper
+    private val myPageRefresher: DetailFragment.RefreshRecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -134,8 +135,9 @@ class ContactFragment : Fragment(), ContactDataListener {
         object : ContactListAdapter.FavoriteClick {
             override fun onFavoriteClick(item: ContactItems, position: Int) {
                 UserManager.registFavoriteItem(nowUser, item.ItemID)
-                ContactItemManager.checkFavorite(item.ItemID)
+                ContactItemManager.toggleFavorite(item.ItemID)
                 listAdapter.submitList(ContactItemManager.sortAllWithHeader().toList())
+                myPageRefresher?.refreshRecycler(ContactItemManager.sortAllWithHeader(), ContactItemManager.sortFavoriteWithHeader())
             }
         }.also { listAdapter.favoriteClick = it }
     }
@@ -161,7 +163,7 @@ class ContactFragment : Fragment(), ContactDataListener {
                 itemTouchHelper.attachToRecyclerView(binding.recyclerViewContact)
             }
         }
-        listAdapter.notifyDataSetChanged()
+        binding.recyclerViewContact.layoutManager = gridLayoutManager
     }
 
     private fun setGridLayoutHeder() {
@@ -175,10 +177,13 @@ class ContactFragment : Fragment(), ContactDataListener {
 
     fun initRecyclerViewRefresher(fragment: DetailFragment) {
         object : DetailFragment.RefreshRecyclerView {
-            override fun refreshRecycler(list: MutableList<ContactItems>) {
-                listAdapter.submitList(list)
+            override fun refreshRecycler(
+                allList: MutableList<ContactItems>,
+                favoriteList: MutableList<ContactItems>
+            ) {
+                listAdapter.submitList(allList)
             }
-        }.also { fragment.refrecher = it }
+        }.also { fragment.refresher = it }
     }
 
     override fun onResume() {

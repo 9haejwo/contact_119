@@ -17,7 +17,6 @@ class MyPageFragment : Fragment() {
     private val binding by lazy { FragmentMyPageBinding.inflate(layoutInflater) }
     private val layoutManager = GridLayoutManager(context, 1)
     private val listAdapter = ContactListAdapter(layoutManager)
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,11 +26,16 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
-        initInput()
+        setUP()
     }
 
-    private fun initRecyclerView(){
+    private fun setUP() {
+        initRecyclerView()
+        initInput()
+        updateView()
+    }
+
+    private fun initRecyclerView() {
         Log.i("my_page_test", "click")
 
         binding.mypageRecyclerview.adapter = listAdapter
@@ -42,6 +46,17 @@ class MyPageFragment : Fragment() {
     private fun initInput() {
         clickView()
         clickFavorite()
+    }
+
+    private fun updateView() {
+        val user = UserManager.getUserByName(nowUser)
+
+        with(binding) {
+            tvUesrname.text = user.userName
+            tvBloodtype.text = user.bloodType
+            tvDetaillocate.text = user.location
+            tvPhonenum.text = user.phoneNumber
+        }
     }
 
     private fun clickView() {
@@ -62,7 +77,7 @@ class MyPageFragment : Fragment() {
         object : ContactListAdapter.FavoriteClick {
             override fun onFavoriteClick(item: ContactItems, position: Int) {
                 UserManager.registFavoriteItem(nowUser, item.ItemID)
-                ContactItemManager.checkFavorite(item.ItemID)
+                ContactItemManager.toggleFavorite(item.ItemID)
                 listAdapter.submitList(ContactItemManager.sortFavoriteWithHeader().toList())
             }
         }.also { listAdapter.favoriteClick = it }
@@ -75,11 +90,14 @@ class MyPageFragment : Fragment() {
 
     fun initRecyclerViewRefresher(fragment: DetailFragment) {
         object : DetailFragment.RefreshRecyclerView {
-            override fun refreshRecycler(list: MutableList<ContactItems>) {
-                listAdapter.submitList(list)
+            override fun refreshRecycler(
+                allList: MutableList<ContactItems>,
+                favoriteList: MutableList<ContactItems>
+            ) {
+                listAdapter.submitList(favoriteList)
             }
-        }.also { fragment.refrecher = it }
+        }.also {
+            fragment.refresher = it
+        }
     }
-
-
 }
