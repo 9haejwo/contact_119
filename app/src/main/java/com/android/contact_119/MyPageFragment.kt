@@ -48,8 +48,6 @@ class MyPageFragment : Fragment() {
     }
 
 
-
-
     private fun initRecyclerView(){
         Log.i("listadaptercheck", "click")
         val listAdapter = ContactListAdapter()
@@ -71,23 +69,3 @@ class MyPageFragment : Fragment() {
     }
 }
 
-
-//class MypageActivity : AppCompatActivity() {
-//
-//    private lateinit var binding: ActivityMainBinding
-//
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        binding = ActivityMypageBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        val dataList = mutableListOf<User>()
-//
-//        val adapter = MyAdapter(dataList)
-//        binding.recyclerView.adapter = adapter
-//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-//
-//    }
-//}
