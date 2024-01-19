@@ -1,10 +1,10 @@
 package com.android.contact_119
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDetailBinding
 import com.android.contact_119.manager.ContactItemManager
@@ -41,7 +41,7 @@ class DetailFragment : Fragment() {
 
         itemID?.let { id ->
             val contactItem = ContactItemManager.getById(id)
-
+            if(contactItem.favorite) binding.ivLike.setImageResource(R.drawable.favorite_big_on) else binding.ivLike.setImageResource(R.drawable.favorite_big_off)
             binding.tvHospital.text = contactItem.itemName
             binding.tvPhoneNum.text = contactItem.phoneNumber
             binding.tvAddr.text = contactItem.address
@@ -59,6 +59,8 @@ class DetailFragment : Fragment() {
     var refrecher: RefreshRecyclerView? = null
 
     private fun toggleFavorite() {
+        val id = itemID?.let { ContactItemManager.getById(it) }
+        favoriteUser = id?.favorite == true
         if (favoriteUser) {
             binding.ivLike.setImageResource(R.drawable.favorite_big_off)
             favoriteUser = false
