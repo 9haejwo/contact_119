@@ -12,15 +12,10 @@ class ViewPagerAdapter(private val mainActivity: MainActivity) :
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> {
-                ContactFragment() //연락처 페이지
-            }
-
-            1 -> {
-                MyPageFragment() //마이 페이지
-            }
-
+            0 -> ContactFragment()
+            1 -> MyPageFragment()
             else -> throw IllegalStateException("포지션 에러")
         }
+
     }
 }

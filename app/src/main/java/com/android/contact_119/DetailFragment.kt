@@ -1,47 +1,92 @@
 package com.android.contact_119
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDetailBinding
 import com.android.contact_119.manager.ContactItemManager
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM1 = "param1"  //아이템 아이디
+private const val ARG_PARAM2 = "param2"  //user 이름
 
 class DetailFragment : Fragment() {
     private val binding by lazy { FragmentDetailBinding.inflate(layoutInflater) }
-    private var param1: Long? = null
-    private var param2: String? = null
+    private var itemID: Long? = null
+    private var nowUser: String? = null
+    private var favoriteUser = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getLong(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            itemID = it.getLong(ARG_PARAM1)
+            nowUser = it.getString(ARG_PARAM2)
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.ivDetail.setOnClickListener {
-            Log.i("click_test", "${ContactItemManager.getById(param1 ?: 0)}, ${param2}")
+        itemID?.let { id ->
+            val contactItem = ContactItemManager.getById(id)
+
+            binding.tvHospital.text = contactItem.itemName
+            binding.tvPhoneNum.text = contactItem.phoneNumber
+            binding.tvAddr.text = contactItem.address
+            binding.ivDetail.setImageResource(contactItem.picture ?: R.drawable.hospital)
+        }
+
+//        binding.detailLike.setOnClickListener {
+////            Log.i("click_test", "${ContactItemManager.getById(itemID ?: 0)}, ${nowUser}")
+////            if(!favoriteUser){
+////                binding.ivLike.setImageResource(R.drawable.favorite_big_on)
+////                favoriteUser = true
+////            }else{
+////                binding.ivLike.setImageResource(R.drawable.favorite_big_off)
+////                favoriteUser = false
+////            }
+////            val fragmentContact = ContactFragment.newInstance(dataTosend)
+////            requireActivity().supportFragmentManager.beginTransaction()
+////                .replace(R.id.layout_coordinator, fragmentContact)
+////                .addToBackStack(null)
+////                .commit()
+//
+//            // 좋아요 버튼 클릭 리스너 설정
+//
+//        }
+        binding.detailLike.setOnClickListener {
+            toggleFavorite()
+        }
+
+
+    }
+
+    var refrecher: RefreshRecyclerView? = null
+
+    private fun toggleFavorite() {
+        if (favoriteUser) {
+            binding.ivLike.setImageResource(R.drawable.favorite_big_off)
+            favoriteUser = false
+            ContactItemManager.checkFavorite(itemID ?: 0)
+            refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader())
+        } else {
+            binding.ivLike.setImageResource(R.drawable.favorite_big_on)
+            favoriteUser = true
+            ContactItemManager.checkFavorite(itemID ?: 0)
+            refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader())
         }
     }
 
     companion object {
-        @JvmStatic
         fun newInstance(param1: Long, param2: String) =
             DetailFragment().apply {
                 arguments = Bundle().apply {
@@ -49,5 +94,9 @@ class DetailFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    interface RefreshRecyclerView {
+        fun refreshRecycler(list: MutableList<ContactItems>)
     }
 }
