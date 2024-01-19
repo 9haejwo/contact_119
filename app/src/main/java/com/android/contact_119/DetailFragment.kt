@@ -77,12 +77,12 @@ class DetailFragment : Fragment() {
             binding.ivLike.setImageResource(R.drawable.favorite_big_off)
             favoriteUser = false
             ContactItemManager.checkFavorite(itemID ?: 0)
-            refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader())
+            refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader(), ContactItemManager.sortFavoriteWithHeader())
         } else {
             binding.ivLike.setImageResource(R.drawable.favorite_big_on)
             favoriteUser = true
             ContactItemManager.checkFavorite(itemID ?: 0)
-            refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader())
+            refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader(), ContactItemManager.sortFavoriteWithHeader())
         }
     }
 
@@ -97,6 +97,6 @@ class DetailFragment : Fragment() {
     }
 
     interface RefreshRecyclerView {
-        fun refreshRecycler(list: MutableList<ContactItems>)
+        fun refreshRecycler(allList: MutableList<ContactItems>, favoriteList: MutableList<ContactItems>)
     }
 }

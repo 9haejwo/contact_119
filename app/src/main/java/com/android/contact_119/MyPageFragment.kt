@@ -75,8 +75,11 @@ class MyPageFragment : Fragment() {
 
     fun initRecyclerViewRefresher(fragment: DetailFragment) {
         object : DetailFragment.RefreshRecyclerView {
-            override fun refreshRecycler(list: MutableList<ContactItems>) {
-                listAdapter.submitList(list)
+            override fun refreshRecycler(
+                allList: MutableList<ContactItems>,
+                favoriteList: MutableList<ContactItems>
+            ) {
+                listAdapter.submitList(favoriteList)
             }
         }.also { fragment.refrecher = it }
     }

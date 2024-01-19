@@ -161,7 +161,7 @@ class ContactFragment : Fragment(), ContactDataListener {
                 itemTouchHelper.attachToRecyclerView(binding.recyclerViewContact)
             }
         }
-        listAdapter.notifyDataSetChanged()
+        binding.recyclerViewContact.layoutManager = gridLayoutManager
     }
 
     private fun setGridLayoutHeder() {
@@ -175,8 +175,11 @@ class ContactFragment : Fragment(), ContactDataListener {
 
     fun initRecyclerViewRefresher(fragment: DetailFragment) {
         object : DetailFragment.RefreshRecyclerView {
-            override fun refreshRecycler(list: MutableList<ContactItems>) {
-                listAdapter.submitList(list)
+            override fun refreshRecycler(
+                allList: MutableList<ContactItems>,
+                favoriteList: MutableList<ContactItems>
+            ) {
+                listAdapter.submitList(allList)
             }
         }.also { fragment.refrecher = it }
     }
