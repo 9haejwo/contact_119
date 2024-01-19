@@ -1,5 +1,6 @@
 package com.android.contact_119.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,12 +10,15 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.android.contact_119.ContactDataListener
 import com.android.contact_119.DetailFragment
 import com.android.contact_119.DialogFragment
 import com.android.contact_119.R
+import com.android.contact_119.SwipeHelperCallback
 import com.android.contact_119.adapter.ContactListAdapter
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentContactBinding
@@ -31,6 +35,7 @@ class ContactFragment : Fragment(), ContactDataListener {
     private val binding by lazy { FragmentContactBinding.inflate(layoutInflater) }
     private val listAdapter by lazy { ContactListAdapter(gridLayoutManager) }
     private val gridLayoutManager = GridLayoutManager(context, 1)
+    private lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +61,15 @@ class ContactFragment : Fragment(), ContactDataListener {
             itemAnimator = null
             layoutManager = gridLayoutManager
             adapter = listAdapter
+            layoutManager = LinearLayoutManager(context)
+            addSwipeAction(context)
         }
+    }
+
+    private fun addSwipeAction(context: Context) {
+        val swipeHelperCallback = SwipeHelperCallback(context, listAdapter, binding.recyclerViewContact)
+        itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewContact)
     }
 
     private fun initToolbarLogo() {
@@ -136,6 +149,7 @@ class ContactFragment : Fragment(), ContactDataListener {
     private fun convertSpanCount(btn: ImageView) {
         with(gridLayoutManager) {
             if (spanCount == 1) {
+                itemTouchHelper.attachToRecyclerView(null)
                 spanCount = 3
                 btn.setVisibleFadeIn()
 //                setGridLayoutHeder()
@@ -144,8 +158,10 @@ class ContactFragment : Fragment(), ContactDataListener {
                 spanCount = 1
                 btn.setVisibleFadeIn()
                 btn.load(R.drawable.grid_icon)
+                itemTouchHelper.attachToRecyclerView(binding.recyclerViewContact)
             }
         }
+        listAdapter.notifyDataSetChanged()
     }
 
     private fun setGridLayoutHeder() {

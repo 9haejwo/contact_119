@@ -70,7 +70,6 @@ class DialogFragment : DialogFragment() {
                 )
             }
 
-
             btnAdd.setOnClickListener {
                 val nameEmpty = etName.text!!.isEmpty()
                 val addressEmpty = etAddress.text!!.isEmpty()

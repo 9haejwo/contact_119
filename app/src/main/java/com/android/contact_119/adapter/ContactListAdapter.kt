@@ -17,6 +17,7 @@ import com.android.contact_119.viewholder.ContactItemViewHolder
 import com.android.contact_119.viewholder.ContentGridItemViewHolder
 import com.android.contact_119.viewholder.ContentsViewHolder
 import com.android.contact_119.viewholder.HeaderViewHolder
+import com.android.contact_119.manager.ContactItemManager
 
 const val TYPE_HEADER = 0
 const val TYPE_CONTENT_LIST = 1
@@ -77,11 +78,23 @@ class ContactListAdapter(private val layoutManager: GridLayoutManager) :
         }
 
         if (viewType == TYPE_CONTENT_LIST) {
-            return ContentsViewHolder(ItemContactRecyclerViewBinding.inflate(inflater, parent,false))
+            return ContentsViewHolder(
+                ItemContactRecyclerViewBinding.inflate(
+                    inflater,
+                    parent,
+                    false
+                )
+            )
         }
 
         if (viewType == TYPE_CONTENT_GRID) {
-            return ContentGridItemViewHolder(ItemContactRecyclerViewGridBinding.inflate(inflater, parent, false))
+            return ContentGridItemViewHolder(
+                ItemContactRecyclerViewGridBinding.inflate(
+                    inflater,
+                    parent,
+                    false
+                )
+            )
         }
         throw IllegalArgumentException("Invalid view type")
     }
@@ -113,6 +126,8 @@ class ContactListAdapter(private val layoutManager: GridLayoutManager) :
     private fun ImageView.checkFavorite(item: ContactItems.Contents) {
         load(if (item.favorite) R.drawable.favorite_big_on else R.drawable.favorite_big_off)
     }
+
+    fun getPosition(position: Int): ContactItems {
+        return ContactItemManager.sortAllWithHeader()[position]
+    }
 }
-
-
