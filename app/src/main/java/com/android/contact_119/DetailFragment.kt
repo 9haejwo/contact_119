@@ -54,7 +54,6 @@ class DetailFragment : Fragment() {
             binding.ivDetail.setImageResource(contactItem.picture ?: R.drawable.hospital)
         }
 
-
         binding.detailLike.setOnClickListener {
             toggleFavorite()
         }
