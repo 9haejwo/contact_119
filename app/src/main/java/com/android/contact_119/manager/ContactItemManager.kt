@@ -51,7 +51,7 @@ object ContactItemManager {
         idKey++
     }
 
-    fun checkFavorite(id: Long) {
+    fun toggleFavorite(id: Long) {
         val nowItem = contactItems.find { it.ItemID == id } as ContactItems.Contents
 
         nowItem.favorite = !nowItem.favorite

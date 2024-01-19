@@ -1,6 +1,5 @@
 package com.android.contact_119
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,10 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.contact_119.databinding.FragmentMyPageBinding
 import com.android.contact_119.adapter.ContactListAdapter
-import com.android.contact_119.adapter.MyAdapter
-import com.android.contact_119.adapter.ViewPagerAdapter
 import com.android.contact_119.data.ContactItems
-import com.android.contact_119.fragment.ContactFragment
 import com.android.contact_119.manager.ContactItemManager
 import com.android.contact_119.manager.UserManager
 
@@ -81,7 +77,7 @@ class MyPageFragment : Fragment() {
         object : ContactListAdapter.FavoriteClick {
             override fun onFavoriteClick(item: ContactItems, position: Int) {
                 UserManager.registFavoriteItem(nowUser, item.ItemID)
-                ContactItemManager.checkFavorite(item.ItemID)
+                ContactItemManager.toggleFavorite(item.ItemID)
                 listAdapter.submitList(ContactItemManager.sortFavoriteWithHeader().toList())
             }
         }.also { listAdapter.favoriteClick = it }
@@ -101,7 +97,7 @@ class MyPageFragment : Fragment() {
                 listAdapter.submitList(favoriteList)
             }
         }.also {
-            fragment.refrecher = it
+            fragment.refresher = it
         }
     }
 }

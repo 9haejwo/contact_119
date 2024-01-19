@@ -135,7 +135,7 @@ class ContactFragment : Fragment(), ContactDataListener {
         object : ContactListAdapter.FavoriteClick {
             override fun onFavoriteClick(item: ContactItems, position: Int) {
                 UserManager.registFavoriteItem(nowUser, item.ItemID)
-                ContactItemManager.checkFavorite(item.ItemID)
+                ContactItemManager.toggleFavorite(item.ItemID)
                 listAdapter.submitList(ContactItemManager.sortAllWithHeader().toList())
                 myPageRefresher?.refreshRecycler(ContactItemManager.sortAllWithHeader(), ContactItemManager.sortFavoriteWithHeader())
             }
@@ -183,7 +183,7 @@ class ContactFragment : Fragment(), ContactDataListener {
             ) {
                 listAdapter.submitList(allList)
             }
-        }.also { fragment.refrecher = it }
+        }.also { fragment.refresher = it }
     }
 
     override fun onResume() {
