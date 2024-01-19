@@ -18,6 +18,7 @@ class DetailFragment : Fragment() {
     private var nowUser: String? = null
     private var favoriteUser = false
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,6 +37,8 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         itemID?.let { id ->
             val contactItem = ContactItemManager.getById(id)
 
@@ -45,30 +48,13 @@ class DetailFragment : Fragment() {
             binding.ivDetail.setImageResource(contactItem.picture ?: R.drawable.hospital)
         }
 
-//        binding.detailLike.setOnClickListener {
-////            Log.i("click_test", "${ContactItemManager.getById(itemID ?: 0)}, ${nowUser}")
-////            if(!favoriteUser){
-////                binding.ivLike.setImageResource(R.drawable.favorite_big_on)
-////                favoriteUser = true
-////            }else{
-////                binding.ivLike.setImageResource(R.drawable.favorite_big_off)
-////                favoriteUser = false
-////            }
-////            val fragmentContact = ContactFragment.newInstance(dataTosend)
-////            requireActivity().supportFragmentManager.beginTransaction()
-////                .replace(R.id.layout_coordinator, fragmentContact)
-////                .addToBackStack(null)
-////                .commit()
-//
-//            // 좋아요 버튼 클릭 리스너 설정
-//
-//        }
         binding.detailLike.setOnClickListener {
             toggleFavorite()
         }
 
 
     }
+
 
     var refrecher: RefreshRecyclerView? = null
 
@@ -85,6 +71,7 @@ class DetailFragment : Fragment() {
             refrecher?.refreshRecycler(ContactItemManager.sortAllWithHeader(), ContactItemManager.sortFavoriteWithHeader())
         }
     }
+
 
     companion object {
         fun newInstance(param1: Long, param2: String) =
