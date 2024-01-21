@@ -22,7 +22,6 @@ import com.android.contact_119.manager.ContactItemManager
 class SwipeHelperCallback(
     private val context: Context,
     private var adapter: ContactListAdapter,
-    private val recyclerView: RecyclerView
 ) :
     ItemTouchHelper.Callback() {
     override fun getMovementFlags(
