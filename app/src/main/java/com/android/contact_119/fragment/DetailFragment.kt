@@ -1,4 +1,4 @@
-package com.android.contact_119
+package com.android.contact_119.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import coil.api.load
+import com.android.contact_119.R
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.FragmentDetailBinding
 import com.android.contact_119.manager.ContactItemManager

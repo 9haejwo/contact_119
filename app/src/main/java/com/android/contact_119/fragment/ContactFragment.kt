@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.android.contact_119.ContactDataListener
-import com.android.contact_119.DetailFragment
-import com.android.contact_119.DialogFragment
+import com.android.contact_119.fragment.ContactDataListener
+import com.android.contact_119.fragment.DetailFragment
+import com.android.contact_119.fragment.DialogFragment
 import com.android.contact_119.R
 import com.android.contact_119.SwipeHelperCallback
 import com.android.contact_119.adapter.ContactListAdapter
