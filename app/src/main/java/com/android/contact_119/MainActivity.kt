@@ -1,8 +1,11 @@
 package com.android.contact_119
 
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.android.contact_119.adapter.ViewPagerAdapter
+import com.android.contact_119.data.ContactItems
 import com.android.contact_119.databinding.ActivityMainBinding
 import com.android.contact_119.manager.UserManager
 import com.google.android.material.tabs.TabLayoutMediator

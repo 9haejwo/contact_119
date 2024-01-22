@@ -1,4 +1,4 @@
-package com.android.contact_119
+package com.android.contact_119.fragment
 
 import android.content.Context
 import android.graphics.Point
@@ -14,6 +14,7 @@ import android.view.WindowManager.LayoutParams
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
+import com.android.contact_119.R
 import com.android.contact_119.databinding.FragmentDialogBinding
 import com.android.contact_119.fragment.ContactFragment
 import com.android.contact_119.manager.BUSAN

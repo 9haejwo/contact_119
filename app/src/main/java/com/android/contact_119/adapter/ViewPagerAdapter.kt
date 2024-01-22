@@ -3,7 +3,7 @@ package com.android.contact_119.adapter
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.android.contact_119.MainActivity
-import com.android.contact_119.MyPageFragment
+import com.android.contact_119.fragment.MyPageFragment
 import com.android.contact_119.fragment.ContactFragment
 
 class ViewPagerAdapter(private val mainActivity: MainActivity) :

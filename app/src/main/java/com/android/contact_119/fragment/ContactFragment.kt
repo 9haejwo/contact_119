@@ -2,7 +2,6 @@ package com.android.contact_119.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.android.contact_119.ContactDataListener
-import com.android.contact_119.DetailFragment
-import com.android.contact_119.DialogFragment
+import com.android.contact_119.fragment.ContactDataListener
+import com.android.contact_119.fragment.DetailFragment
+import com.android.contact_119.fragment.DialogFragment
 import com.android.contact_119.R
 import com.android.contact_119.SwipeHelperCallback
 import com.android.contact_119.adapter.ContactListAdapter
@@ -27,6 +26,7 @@ import com.android.contact_119.extensions.setVisibleFadeIn
 import com.android.contact_119.manager.ContactItemManager
 import com.android.contact_119.manager.UserManager
 import com.android.contact_119.nowUser
+import com.android.contact_119.viewholder.ContentsViewHolder
 
 const val gone = View.GONE
 const val visible = View.VISIBLE
@@ -68,7 +68,8 @@ class ContactFragment : Fragment(), ContactDataListener {
     }
 
     private fun addSwipeAction(context: Context) {
-        val swipeHelperCallback = SwipeHelperCallback(context, listAdapter, binding.recyclerViewContact)
+        val swipeHelperCallback = SwipeHelperCallback(context, listAdapter)
+
         itemTouchHelper = ItemTouchHelper(swipeHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewContact)
     }
@@ -80,7 +81,7 @@ class ContactFragment : Fragment(), ContactDataListener {
     private fun RecyclerView.initToolbarLogoWithScroll() {
         val logo = binding.ivToolbarLogo
 
-        this.setOnScrollChangeListener { _, _, _, _, _ ->
+        setOnScrollChangeListener { _, _, _, _, _ ->
             if (canScrollVertically(-1) && logo.visibility == gone) {
                 logo.setVisibleFadeIn()
             }
@@ -167,7 +168,6 @@ class ContactFragment : Fragment(), ContactDataListener {
     }
 
     private fun setGridLayoutHeder() {
-        Log.i("span_size_test", "click")
         gridLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return if (position == 0) 3 else 1

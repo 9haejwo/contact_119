@@ -22,7 +22,6 @@ import com.android.contact_119.manager.ContactItemManager
 class SwipeHelperCallback(
     private val context: Context,
     private var adapter: ContactListAdapter,
-    private val recyclerView: RecyclerView
 ) :
     ItemTouchHelper.Callback() {
     override fun getMovementFlags(
@@ -48,7 +47,7 @@ class SwipeHelperCallback(
         val item = adapter.getPosition(position) as ContactItems.Contents
 
         //오른쪽 스와이프 시 전화연결 //왼쪽 스와이프 시 아이템 삭제
-        if (direction == ItemTouchHelper.RIGHT) callConnect(item) else removeContact(item)
+        if (direction == RIGHT) callConnect(item) else removeContact(item)
         adapter.notifyDataSetChanged()
     }
 

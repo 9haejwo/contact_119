@@ -1,4 +1,4 @@
-package com.android.contact_119
+package com.android.contact_119.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import com.android.contact_119.R
 import com.android.contact_119.databinding.FragmentMyPageBinding
 import com.android.contact_119.adapter.ContactListAdapter
 import com.android.contact_119.data.ContactItems
 import com.android.contact_119.manager.ContactItemManager
 import com.android.contact_119.manager.UserManager
+import com.android.contact_119.nowUser
 
 class MyPageFragment : Fragment() {
     private val binding by lazy { FragmentMyPageBinding.inflate(layoutInflater) }

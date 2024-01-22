@@ -16,8 +16,7 @@
             android:id="@+id/layout_appbar"
             android:layout_width="match_parent"
             android:layout_height="270dp"
-            android:background="@color/white"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@color/white">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"

@@ -6,16 +6,14 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.viewbinding.ViewBinding
 import coil.api.load
 import com.android.contact_119.R
 import com.android.contact_119.data.ContactItems
-import com.android.contact_119.databinding.ItemContactRecyclerViewBinding
-import com.android.contact_119.databinding.ItemContactRecyclerViewGridBinding
-import com.android.contact_119.databinding.ItemHeaderRecyclerViewBinding
 import com.android.contact_119.viewholder.ContactItemViewHolder
-import com.android.contact_119.viewholder.ContentGridItemViewHolder
-import com.android.contact_119.viewholder.ContentsViewHolder
+import com.android.contact_119.viewholder.ContentGridItemViewHolder as GridViewHolder
+import com.android.contact_119.viewholder.ContentsViewHolder as ListViewHolder
 import com.android.contact_119.viewholder.HeaderViewHolder
 import com.android.contact_119.manager.ContactItemManager
 
@@ -25,7 +23,7 @@ const val TYPE_CONTENT_GRID = 2
 
 
 class ContactListAdapter(private val layoutManager: GridLayoutManager) :
-    ListAdapter<ContactItems, RecyclerView.ViewHolder>(diffUtil) {
+    ListAdapter<ContactItems, ViewHolder>(diffUtil) {
     var itemClick: ItemClick? = null
     var favoriteClick: FavoriteClick? = null
 
@@ -67,39 +65,19 @@ class ContactListAdapter(private val layoutManager: GridLayoutManager) :
         throw IllegalArgumentException("Invaild span count")
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        if (viewType == TYPE_HEADER) {
-            return HeaderViewHolder(ItemHeaderRecyclerViewBinding.inflate(inflater, parent, false))
+        return when (viewType) {
+            TYPE_HEADER -> HeaderViewHolder(inflater.inflateBinding(parent))
+            TYPE_CONTENT_LIST -> ListViewHolder(inflater.inflateBinding(parent))
+            TYPE_CONTENT_GRID -> GridViewHolder(inflater.inflateBinding(parent))
+            else -> throw IllegalArgumentException("Invalid view type")
         }
-
-        if (viewType == TYPE_CONTENT_LIST) {
-            return ContentsViewHolder(
-                ItemContactRecyclerViewBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-                )
-            )
-        }
-
-        if (viewType == TYPE_CONTENT_GRID) {
-            return ContentGridItemViewHolder(
-                ItemContactRecyclerViewGridBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-                )
-            )
-        }
-        throw IllegalArgumentException("Invalid view type")
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
 
         if (item is ContactItems.Header) {
@@ -117,6 +95,16 @@ class ContactListAdapter(private val layoutManager: GridLayoutManager) :
                 favoriteButton.setOnClickListener { favoriteClick?.onFavoriteClick(item, position) }
             }
         }
+    }
+
+    private inline fun < reified T : ViewBinding> LayoutInflater.inflateBinding(parent: ViewGroup): T {
+        val inflate = T::class.java.getMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
+        )
+        return inflate.invoke(null, this, parent, false) as T
     }
 
     private fun ImageView.setThumbnailImage(image: Int?) {
